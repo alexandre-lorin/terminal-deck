@@ -1,57 +1,57 @@
-# Reprise des conversations et verrou d’écriture
+# Resume conversations and write lock
 
-## Cause identifiée dans le lancement de Deck
+## Cause identified in Deck launch
 
-Deck ajoute `-c tui.terminal_title=...` et `-c tui.keymap.composer.queue=[]`.
-Le CLI exclut la connexion implicite au daemon pour ces options de configuration.
-Il peut donc héberger un serveur embarqué distinct du serveur déjà propriétaire
-de la conversation. Un deuxième serveur ne peut pas reprendre son verrou actif.
+Deck adds `-c tui.terminal_title=...` and `-c tui.keymap.composer.queue=[]`.
+The CLI excludes implicit connection to the daemon for these configuration options.
+It can therefore host an embedded server distinct from the server already owned
+of the conversation. A second server cannot take back its active lock.
 
-Source primaire examinée :
+Primary source examined:
 https://github.com/openai/codex/blob/main/codex-rs/tui/src/daemon_startup.rs
-(`config_exclusion`, liste des options compatibles avec le daemon implicite).
+(`config_exclusion`, list of options compatible with the implicit daemon).
 
-## Correction
+## Fix
 
-`src/codex-launch.cjs` examine le point de connexion local de `CODEX_HOME`.
-S’il s’agit d’un socket, Deck lance explicitement :
+`src/codex-launch.cjs` examines the local connection point of `CODEX_HOME`.
+If it is a socket, Deck explicitly launches:
 
 ```sh
 codex --remote unix:// resume --all -c 'tui.terminal_title=["thread-id","thread-title"]' -c 'tui.keymap.composer.queue=[]'
 ```
 
-Le client se connecte ainsi au service partagé existant, malgré ses réglages locaux
-d’interface. Sans socket existant, il conserve le lancement autonome précédent.
-Un socket présent mais un service défaillant produit une erreur native : Deck ne
-force pas la reprise par un autre serveur et ne supprime pas le socket.
+The client thus connects to the existing shared service, despite its local settings
+interface. Without an existing socket, it retains the previous standalone launch.
+A socket present but a service failing produces a native error: Deck does not
+does not force recovery by another server and does not delete the socket.
 
-Documentation officielle du transport :
+Official transport documentation:
 https://learn.chatgpt.com/docs/app-server
 https://learn.chatgpt.com/docs/cli/reference
 
-## Sessions déjà ouvertes
+## Sessions already open
 
-Le changement s’applique aux prochains processus lancés. Il ne transforme pas un
-serveur embarqué déjà actif en serveur partagé. Relancer Deck ferme ses propres
-terminaux comme auparavant ; il faudra ensuite choisir la conversation dans le
-sélecteur. Si un autre client autonome détient encore le chat, il doit le fermer.
+The change applies to the next launched processes. It does not transform a
+embedded server already active as a shared server. Rerolling Deck Closes Its Own
+terminals as before; you will then have to choose the conversation in the
+selector. If another standalone client still owns the chat, they must close it.
 
-Aucun fichier de verrou n’est supprimé ; aucun daemon ni processus extérieur à
-Deck n’est arrêté ; aucune archive ou migration de conversation n’est effectuée.
+No lock files are deleted; no daemon or process outside
+Deck is not stopped; no archive or conversation migration is performed.
 
-## Validation et limite du sandbox
+## Sandbox validation and limit
 
-- Test unitaire avec un vrai socket temporaire : sélection explicite du service,
-  conservation des réglages clavier/titre et lancement autonome en son absence.
-- Recette UI et vrai CLI sans compte : sélecteur, saisie et états préservés.
-- `npm run test:codex-shared` prépare un profil temporaire, démarre son propre
-  app-server puis tente d’attacher deux PTY au même chat, sans compte ni tour modèle.
-- Cette dernière recette n’a pas pu aller jusqu’au bout dans le sandbox de l’agent :
-  le répertoire réservé `/tmp/codex-daemon-1000` est volontairement inaccessible.
-  Le CLI refuse d’y préparer son rendez-vous. Cette protection n’a pas été modifiée.
-  L’accès au socket utilisateur existant est également refusé (`EACCES`).
-- La disparition effective du verrou dans la session normale reste donc à confirmer.
+- Unit test with a real temporary socket: explicit selection of the service,
+  preservation of keyboard/title settings and autonomous launch in its absence.
+- UI recipe and real CLI without account: selector, input and states preserved.
+- `npm run test:codex-shared` prepares a temporary profile, starts its own
+  app-server then attempts to attach two PTYs to the same chat, without account or model tour.
+- This last recipe could not go all the way in the agent sandbox:
+  the reserved directory `/tmp/codex-daemon-1000` is intentionally inaccessible.
+  The CLI refuses to prepare for his appointment there. This protection has not been modified.
+  Access to the existing user socket is also denied (`EACCES`).
+- The effective disappearance of the lock in the normal session therefore remains to be confirmed.
 
-Le banc partagé utilise `ws` depuis l’outillage de recette sous
-`/tmp/deck-ui-tools`, comme Playwright pour les autres recettes ; aucune dépendance
-n’est ajoutée à l’application pour ce changement.
+The shared bench uses `ws` from the recipe tooling under
+`/tmp/deck-ui-tools`, like Playwright for other recipes; no dependency
+is not added to the application for this change.

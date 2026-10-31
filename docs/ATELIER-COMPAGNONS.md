@@ -1,46 +1,46 @@
-# L’atelier des compagnons
+# The companions’ workshop
 
-Outil local de prévisualisation et de cadrage des sprites de Terminal Deck. Il n’envoie aucune image à un service externe et ne remplace aucun fichier de l’application.
+Terminal Deck local sprite preview and framing tool. It does not send any images to an external service and does not replace any application files.
 
-## Ouvrir
+## Open
 
-Depuis Deck : **Ctrl K → Atelier des compagnons**. Le navigateur par défaut s’ouvre.
+From Deck: **Ctrl K → Companion Workshop**. The default browser opens.
 
-Ou, depuis le dossier du projet :
+Or, from the project folder:
 
 ```sh
 npm run studio -- --open
 ```
 
-Le serveur écoute seulement sur `127.0.0.1`, sur le port 47831 lorsqu’il est disponible. Si ce port est occupé, un port libre est choisi et le lien est affiché. Ctrl C ferme le serveur lancé depuis le terminal. Celui lancé par Deck est fermé avec Deck.
+The server only listens on `127.0.0.1`, on port 47831 when available. If this port is busy, a free port is chosen and the link is displayed. Ctrl C closes the server launched from the terminal. The one launched by Deck is closed with Deck.
 
-## Utiliser
+## Use
 
-1. Choisir Blob, Vesper ou Byte, puis une expression.
-2. Lire l’animation, la ralentir, mettre en pause et choisir une pose dans la bande inférieure.
-3. Déplacer le cadre dans la planche à droite ; tirer son coin inférieur droit pour le redimensionner. Les champs permettent des valeurs précises. « Masquer en haut » retire les pixels parasites sans déplacer la silhouette.
-4. Utiliser le damier pour la transparence, la pelure pour comparer avec la pose précédente, et la grille pour les pixels de l’aperçu.
-5. Exporter une planche PNG et ses réglages JSON. Le PNG contient uniquement les sprites, sans les repères ni la pelure.
+1. Choose Blob, Vesper or Byte, then an expression.
+2. Play the animation, slow it down, pause and choose a pose in the lower band.
+3. Move the frame into the board on the right; drag its lower right corner to resize it. Fields allow precise values. “Hide on top” removes stray pixels without moving the silhouette.
+4. Use the checkerboard for transparency, the skin to compare with the previous pose, and the grid for the preview pixels.
+5. Export a PNG board and its JSON settings. The PNG contains only the sprites, without the guides or skin.
 
-Les contrôles signalent les pixels qui touchent les bords : c’est une aide visuelle, pas une preuve automatique que tout le dessin est correct.
+The controls report pixels that touch the edges: this is a visual aid, not automatic proof that the entire drawing is correct.
 
-Raccourcis : **Espace** pour lire ou mettre en pause ; **← / →** pour changer de pose ; **Alt + flèches** pour déplacer le cadre d’un pixel source, avec **Maj** pour dix pixels. La saisie d’un champ met la lecture en pause.
+Shortcuts: **Space** to play or pause; **← / →** to change pose; **Alt + arrows** to move the frame one source pixel, with **Shift** for ten pixels. Entering a field pauses playback.
 
-## Sauvegarde et imports
+## Backup and imports
 
-Les réglages sont conservés dans le stockage local du navigateur, par planche et par personnage. Ils restent liés au navigateur et à l’adresse locale. Le JSON permet de les conserver ailleurs ou de les recharger.
+Settings are kept in the browser's local storage, per board and per character. They remain linked to the browser and the local address. JSON allows them to be stored elsewhere or reloaded.
 
-Une planche PNG personnelle peut être importée, puis ses colonnes et ses lignes réglées. Elle reste en mémoire du navigateur ; après rechargement, il faut réimporter ce PNG pour retrouver les réglages associés. Taille maximale : 24 Mo et 8192 × 8192 pixels.
+A personal PNG sheet can be imported, then its columns and rows adjusted. It remains in the browser's memory; after reloading, you must re-import this PNG to find the associated settings. Maximum size: 24 MB and 8192 × 8192 pixels.
 
-Le JSON conserve le cadrage dans la source, les durées et les coordonnées des cadres de la planche exportée. Les exports sont carrés, de 32 à 128 pixels selon le choix, avec proportions conservées et alignement sur le bas.
+The JSON preserves the framing in the source, the durations and the coordinates of the frames of the exported sheet. The exports are square, from 32 to 128 pixels depending on the choice, with proportions preserved and aligned at the bottom.
 
-## Périmètre
+## Perimeter
 
-L’atelier régularise les cadres et permet de les inspecter. Il ne transforme pas automatiquement une illustration générée en dessin pixel art à grille régulière. Il ne dessine pas de nouveaux pixels et n’applique pas les exports à Deck sans une modification distincte.
+The workshop regularizes the frames and allows them to be inspected. It does not automatically transform a generated illustration into a regular grid pixel art drawing. It does not draw new pixels or apply exports to Deck without a separate edit.
 
-L’aperçu montre les poses source. Les transformations décoratives ajoutées par Deck — respiration, étincelles, écran de veille — ne sont pas incluses dans le PNG. Le sommeil de Deck conserve une pose stable ; l’atelier permet d’inspecter les quatre poses présentes dans la planche.
+The preview shows the source poses. The decorative transformations added by Deck—breathing, sparkles, screen saver—are not included in the PNG. Deck's sleep maintains a stable pose; the workshop allows you to inspect the four poses present in the board.
 
-## Vérification
+## Verification
 
 ```sh
 npm run check
@@ -49,6 +49,6 @@ npm run test:studio
 npm run test:ui
 ```
 
-La recette de l’atelier utilise un vrai navigateur Electron isolé : déplacement de cadre, clavier, sauvegarde locale, export PNG et JSON via le téléchargement natif, réimport, vue étroite et contrôle des empreintes des images d’origine. Elle ne lance aucun tour Codex et n’utilise aucun compte.
+The workshop recipe uses a real isolated Electron browser: frame movement, keyboard, local save, PNG and JSON export via native download, reimport, narrow view and fingerprint control of the original images. She does not initiate any Codex tricks or use any accounts.
 
-Le serveur est en lecture seule et ne sert qu’une liste explicite de fichiers de l’atelier et de ses six planches connues. Les chemins arbitraires et les requêtes d’écriture sont refusés. La page ne dispose d’aucun accès au pont IPC de Deck.
+The server is read-only and only serves an explicit list of workshop files and its six known boards. Arbitrary paths and write requests are denied. The page does not have any access to Deck's IPC bridge.

@@ -1,74 +1,74 @@
-# Migration Tauri — 26 octobre 2026
+# Tauri migration — 26 October 2026
 
-La version Tauri conserve le frontend xterm.js et les compagnons. Son moteur Rust
-utilise portable-pty ; aucun processus Electron ni backend Node n’est nécessaire
-pour exécuter le binaire. Electron reste disponible pour comparaison et retour.
-Le dossier historique n’est pas renommé afin de préserver les chemins locaux.
+The Tauri version retains the xterm.js frontend and companions. Its Rust engine
+use portable-pty; no Electron process or Node backend is needed
+to run the binary. Electron remains available for comparison and feedback.
+The historic record is not being renamed to preserve local paths.
 
-## Commandes
+## Orders
 
-- `npm start` : développement Tauri ; `npm run start:electron` : ancien moteur.
-- `npm run build:tauri` : binaire optimisé dans `src-tauri/target/release/terminal-deck`.
-- `npm run install:tauri` : installation parallèle `terminal-deck-tauri` et menu dédié.
-- `node scripts/install-tauri.cjs --replace` : remplacement explicite du lanceur principal.
-- `terminal-deck-electron` : moteur Electron conservé après installation parallèle.
-- `npm run memory` : PSS/RSS des processus visibles depuis la session courante.
-- `npm run instructions:git` : applique le bloc Git global, sauvegarde puis remplacement atomique.
+- `npm start`: Tauri development; `npm run start:electron`: old engine.
+- `npm run build:tauri`: optimized binary in `src-tauri/target/release/terminal-deck`.
+- `npm run install:tauri`: parallel installation `terminal-deck-tauri` and dedicated menu.
+- `node scripts/install-tauri.cjs --replace`: explicit replacement of the main launcher.
+- `terminal-deck-electron`: Electron motor retained after parallel installation.
+- `npm run memory`: PSS/RSS of processes visible from the current session.
+- `npm run instructions:git`: apply global Git block, save then atomic replace.
 
-Le profil est `~/.config/terminal-deck-tauri/workspace.json`. Au premier import,
-l’installateur conserve aussi une copie brute du profil Electron dans ce nouveau
-dossier, avec permissions privées. Le profil d’origine reste intact. Les deux
-profils ne se synchronisent pas après la copie. Les conversations restent gérées
-par Codex ; seules les dispositions et préférences documentées sont importées.
-`TERMINAL_DECK_PROFILE` continue de permettre une recette isolée.
+The profile is `~/.config/terminal-deck-tauri/workspace.json`. At the first import,
+the installer also keeps a raw copy of the Electron profile in this new
+folder, with private permissions. The original profile remains intact. Both
+Profiles do not sync after copying. Conversations remain managed
+by Codex; only documented dispositions and preferences are imported.
+`TERMINAL_DECK_PROFILE` continues to allow an isolated recipe.
 
-## Architecture et limites
+## Architecture and limits
 
-- `src-tauri/src/main.rs` : API explicite, garde de fenêtre, fenêtres locales et fermeture.
-- `terminal.rs` : PTY, UTF-8 entre lectures, redimensionnement, acquittements et contre-pression.
-- `workspace.rs` : validation et écriture atomique, mêmes indices de pets et format de profil.
-- `quotas.rs` : protocole app-server initialisation/lecture, cache cinq minutes, délai douze secondes, dernier relevé conservé en cas d’erreur.
-- `git.rs` : commande fixe en lecture seule, sortie bornée et délai huit secondes. Le moteur Electron propose la même vue via `src/git.cjs`.
-- `src/tauri-bridge.js` : contrat frontend commun, écouteurs installés avant boot.
-- L’atelier est une autre WebView locale. Il ne peut pas utiliser `deck` ; sa seule commande métier est `studio_export`, limitée aux PNG/JSON validés dans Téléchargements. Création exclusive pour ne pas écraser de fichier. Aucune possibilité de choisir un chemin arbitraire.
-- Navigation limitée aux pages locales prévues ; nouvelles fenêtres distantes refusées. Les capacités de l’interface principale ne s’appliquent pas à l’atelier.
-- Les scénarios intégrés ne sont compilés qu’avec `native-smoke`. **Ne jamais installer ce binaire de test** ; la compilation normale les exclut.
+- `src-tauri/src/main.rs`: Explicit API, window guard, local windows and closing.
+- `terminal.rs`: PTY, UTF-8 between reads, resizing, acknowledgments and back pressure.
+- `workspace.rs`: commit and atomic write, same fart indices and profile format.
+- `quotas.rs`: app-server initialization/read protocol, five-minute cache, twelve-second delay, last reading kept in case of error.
+- `git.rs`: fixed read-only command, bounded output and eight-second delay. The Electron engine offers the same view via `src/git.cjs`.
+- `src/tauri-bridge.js`: common frontend contract, listeners installed before boot.
+- Workbench is another local WebView. It cannot use `deck`; its only business command is `studio_export`, limited to PNG/JSON validated in Downloads. Exclusive creation so as not to overwrite any files. No possibility to choose an arbitrary path.
+- Navigation limited to the intended local pages; new remote windows refused. The capabilities of the main interface do not apply to the workshop.
+- Built-in scenarios are only compiled with `native-smoke`. **Never install this test binary**; normal compilation excludes them.
 
-Les tests X11 isolés ne prouvent pas la recette sur le bureau Hyprland/Wayland réel,
-ni l’action d’un serveur de notifications réel, ni la reprise d’un compte Codex en
-cours d’utilisation. Aucun verrou n’est supprimé et aucun serveur Codex global
-n’est arrêté. La sélection du serveur partagé suit les arguments existants.
+Isolated X11 testing does not prove recipe on actual Hyprland/Wayland desktop,
+neither the action of a real notification server, nor the resumption of a Codex account in
+during use. No locks are removed and no global Codex servers
+is not stopped. The shared server selection follows the existing arguments.
 
-## Mémoire mesurée
+## Memory measured
 
-Scénario local synthétique : trois shells bash au repos, fenêtre 1520 × 960,
-Xvfb sans GPU et profils temporaires. Tauri compilé en release. Aucun compte ou
-prompt modèle. Mesure des processus descendants après stabilisation cinq secondes.
+Synthetic local scenario: three bash shells at rest, window 1520 × 960,
+Xvfb without GPU and temporary profiles. Tauri compiled in release. No account or
+prompt template. Measurement of descending processes after five seconds of stabilization.
 
-| Moteur | PSS application | RSS cumulée application | PSS avec les shells |
+| Engine | PSS app | RSS cumulative application | PSS with shells |
 |---|---:|---:|---:|
-| Electron | 218 Mio | 626,9 Mio | 221,9 Mio |
-| Tauri optimisé | 333,4 Mio | 603,2 Mio | 337 Mio |
+| Electron | 218 MiB | 626,9 MiB | 221,9 MiB |
+| Optimized Tauri | 333,4 MiB | 603,2 MiB | 337 MiB |
 
-**Ce test ne montre pas de baisse de mémoire PSS.** La RSS additionnée compte des
-pages partagées plusieurs fois ; son léger recul ne suffit pas à déclarer un gain.
-Ce relevé ne mesure pas le Deck de Toubi sur son bureau, ses processus Codex réels,
-ni son accélération graphique. Le JSON de mesure est dans
-`artifacts/memory-comparison.json` (artefact local ignoré par Git).
+**This test does not show a drop in PSS memory.** The added RSS counts
+pages shared several times; its slight decline is not enough to declare a gain.
+This statement does not measure Toubi's Deck on his desktop, his actual Codex processes,
+nor its graphics acceleration. The measurement JSON is in
+`artifacts/memory-comparison.json` (local artifact ignored by Git).
 
-L’objectif d’une consommation moindre reste à confirmer/optimiser sur le bureau
-réel. L’installation parallèle permet de comparer sans imposer cette hypothèse.
+The objective of lower consumption remains to be confirmed/optimized on the desktop
+real. The parallel installation allows comparison without imposing this assumption.
 
-Sources techniques : [architecture Tauri](https://tauri.app/concept/architecture/),
-[configuration Tauri](https://v2.tauri.app/reference/config/),
-[portable-pty](https://docs.rs/portable-pty/latest/portable_pty/).
+Technical sources: [Tauri](https://tauri.app/concept/architecture/) architecture,
+[Tauri configuration](https://v2.tauri.app/reference/config/),
+[laptop-pty](https://docs.rs/portable-pty/latest/portable_pty/).
 
-## Recette finale
+## Final recipe
 
-25 tests JavaScript et 7 tests Rust passent ; syntaxe et format vérifiés.
-Recettes Electron UI/démarrage/atelier et recette Tauri GTK passent. Cette dernière
-vérifie notamment les vrais raccourcis X11, le presse-papiers natif, l’export PNG
-écrit par Rust, son en-tête, la séparation des commandes et la fermeture native
-sans confirmation. Un essai séparé du binaire release sans feature de test valide
-l’ouverture de fenêtre, Ctrl Maj N et une saisie shell réelle.
-Installation parallèle effectuée, lanceur principal Electron conservé.
+25 JavaScript tests and 7 Rust tests pass; Syntax and format checked.
+Electron UI/starter/workshop recipes and Tauri GTK recipe pass. The latter
+in particular checks the real X11 shortcuts, the native clipboard, PNG export
+written by Rust, its header, command separation and native closure
+without confirmation. A separate test of the binary release without a valid test feature
+window opening, Ctrl Shift N and actual shell input.
+Parallel installation carried out, main Electron launcher retained.

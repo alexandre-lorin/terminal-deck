@@ -1,27 +1,27 @@
-# Fox Loaf et Corbac mini
+# Fox Loaf and Corbac mini
 
-Créés le 25 octobre 2026 avec la compétence **imagegen**, outil intégré, à partir des personnages 06 et 01 de la référence fournie par Toubi. La référence est conservée dans `assets/mascots/references/pets-board.png`. Les sorties originales de génération sont conservées ; deux copies finales sont intégrées au projet, sans écraser le trio ni ses planches.
+Created on 25 October 2026 with the **imagegen** skill, integrated tool, from the characters 06 and 01 of the reference provided by Toubi. The reference is kept in `assets/mascots/references/pets-board.png`. The original generation outputs are preserved; two final copies are integrated into the project, without overwriting the trio or its boards.
 
-La version active, simplifiée pour se rapprocher du trio, est décrite dans [les versions harmonisées](FOX-CORBAC-HARMONISES.md).
+The active version, simplified to approximate the trio, is described in [the harmonized versions](FOX-CORBAC-HARMONISES.md).
 
-## Première version conservée
+## First version kept
 
 - `assets/mascots/fox-loaf-sheet.png` — 1024 × 1536, RGBA, 24 poses.
 - `assets/mascots/corbac-mini-sheet.png` — 1024 × 1536, RGBA, 24 poses.
 
-Chaque atlas a quatre colonnes et six rangées : curiosité, clavier, attente, salut, bâillement/sommeil, réveil. Le sommeil utilise la dernière pose de bâillement avec respiration continue ; les autres états réutilisent les transitions et signaux natifs de Deck. Un tour terminé ne signifie toujours pas que la tâche a réussi.
+Each atlas has four columns and six rows: curiosity, keyboard, wait, hi, yawn/sleep, wake up. Sleep uses the last pose of yawning with continuous breathing; other states reuse Deck's native transitions and signals. A completed round still does not mean the task was successful.
 
-Le cadrage repose sur des cellules de 256 × 256. Les origines verticales observées sont 0, 256, 512, 752, 1000 et 1256 px pour éviter les débordements des rangées générées. Elles sont partagées par le rendu et l’atelier via `src/pets.js`. L’inspection des pixels alpha a servi uniquement au contrôle du cadrage ; aucun PNG n’a été retouché par script. La transparence est conservée.
+The framing is based on cells of 256 × 256. The vertical origins observed are 0, 256, 512, 752, 1000 and 1256 px to avoid overflows of the generated rows. They are shared by the renderer and the workshop via `src/pets.js`. The alpha pixel inspection was used only to control the framing; no PNGs have been scripted. Transparency is preserved.
 
-Les images ont une esthétique pixel art générée ; elles ne sont pas une reconstruction manuelle sur une grille parfaite. Le salut et le sommeil des planches sont des poses distinctes, pas seulement des transformations de l’image au repos.
+The images have a generated pixel art aesthetic; they are not a manual reconstruction on a perfect grid. The salute and sleep planks are distinct poses, not just transformations of the resting image.
 
-## Choix et compatibilité
+## Choice and compatibility
 
-Fox Loaf = indice 3, Corbac mini = indice 4. Les indices 0, 1 et 2, les choix sauvegardés et les attributions automatiques historiques restent inchangés. Le choix explicite suit une conversation identifiée et se reflète dans la Veilleuse. Sans conversation, l’aperçu des quotas alterne entre les cinq.
+Fox Loaf = index 3, Corbac mini = index 4. The indices 0, 1 and 2, saved choices and historical automatic assignments remain unchanged. The explicit choice follows an identified conversation and is reflected in the Nightlight. Without conversation, the quota overview alternates between the five.
 
-L’atelier expose les états des nouveaux personnages, conserve des brouillons distincts par expression et exporte les poses en PNG et leurs réglages en JSON. L’export et l’import des atlas n’écrasent pas les sources.
+The workshop exposes the states of new characters, keeps separate drafts by expression and exports poses in PNG and their settings in JSON. Exporting and importing atlases does not overwrite the sources.
 
-## Prompts exacts
+## Exact prompts
 
 ### Fox Loaf
 

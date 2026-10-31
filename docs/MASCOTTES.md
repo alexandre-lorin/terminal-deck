@@ -1,78 +1,78 @@
-# Compagnons de terminal
+# Terminal Companions
 
-Les panneaux Codex affichent un compagnon stable, choisi à partir de leur identifiant.
-La Veilleuse reprend le même personnage et le même état que le Codex actif. Si le panneau actif est un shell, elle utilise le premier Codex du projet. Sans Codex, elle conserve sa rotation décorative.
+Codex panels display a stable companion, chosen from their ID.
+The Nightlight has the same character and state as the active Codex. If the active panel is a shell, it uses the first Codex of the project. Without Codex, it retains its decorative rotation.
 
-- Sans signal : état inconnu, léger balancement décoratif (notamment dans `/resume`), jamais une animation de travail.
-- `idle` : respiration légère, puis sommeil après 45 secondes sans travail.
-- `working` : boucle de quatre poses au clavier.
-- `blocked` : posture attentive ; l’état ne précise pas nécessairement une question.
-- `done` : petit bond ponctuel, puis sommeil après 45 secondes ; cela n’annonce pas que la tâche est réussie.
-- `error` : image désaturée et libellé explicite au survol.
-- Sortie du processus : retour à l’état inconnu.
+- Without signal: unknown state, slight decorative swing (notably in `/resume`), never a working animation.
+- `idle`: light breathing, then sleep after 45 seconds without work.
+- `working`: loop of four poses on the keyboard.
+- `blocked`: attentive posture; the statement does not necessarily specify a question.
+- `done`: small occasional jump, then sleep after 45 seconds; this does not announce that the task is successful.
+- `error`: desaturated image and explicit label on hover.
+- Exit from the process: return to the unknown state.
 
-Les préférences système de réduction des mouvements arrêtent les animations.
-Chaque panneau Codex affiche son compagnon fixe de 96 pixels en bas à droite, décalé de 36 pixels depuis le bord. La marge latérale réservée est supprimée : le terminal utilise toute sa largeur et le compagnon se superpose localement à son contenu. Le survol agrandit le compagnon à 128 pixels ; le clic ouvre l’écran de veille du panneau avec le personnage centré en grand. Un second clic ou Échap revient au terminal. Le bouton est accessible au clavier. Sur les panneaux étroits, les tailles normales et au survol sont de 72 et 96 pixels ; les panneaux trop courts le masquent.
+Motion reduction system preferences stop animations.
+Each Codex panel displays its fixed companion by 96 pixels at the bottom right, offset by 36 pixels from the edge. The reserved side margin is removed: the terminal uses its full width and the companion locally overlays its content. Hovering enlarges the companion to 128 pixels; the click opens the screen saver of the panel with the character centered in large. A second click or Esc returns to the terminal. The button is accessible from the keyboard. On narrow panels, the normal and hover sizes are 72 and 96 pixels; Panels that are too short hide it.
 
 ## Signal
 
-Le parseur xterm écoute uniquement OSC 7501 : `state=working:app=codex`, etc.
-Aucune lecture de transcript, de prompt ou de base de conversations ; aucun hook
-ajouté ni modification du compte. Une ancienne version sans ce signal conserve
-uniquement son mouvement décoratif. Le texte du terminal n’est jamais interprété comme une activité.
+The xterm parser only listens to OSC 7501: `state=working:app=codex`, etc.
+No reading of transcripts, prompts or conversation bases; no hook
+added or modified the account. An older version without this signal retains
+only its decorative movement. Terminal text is never interpreted as activity.
 
-Source primaire : https://github.com/openai/codex/blob/main/codex-rs/tui/src/terminal_program_status.rs
+Primary source: https://github.com/openai/codex/blob/main/codex-rs/tui/src/terminal_program_status.rs
 
 ## Assets
 
-- `assets/mascots/trio.png` : original de Toubi, conservé intact.
-- `assets/mascots/working-sheet.png` : planche transparente créée avec l’outil intégré imagegen.
+- `assets/mascots/trio.png`: original of Toubi, preserved intact.
+- `assets/mascots/working-sheet.png`: transparent sheet created with the integrated imagegen tool.
 
-La planche générée comporte une marge supérieure importante : les fenêtres CSS
-utilisent les positions effectivement observées, pas une hypothèse de grille régulière.
+The generated spreadsheet has a large upper margin: CSS windows
+use the actually observed positions, not a regular grid assumption.
 
-Prompt utilisé :
+Prompt used:
 
-> Use case: identity-preserve. Create a production pixel art animation sprite sheet based exactly on the three supplied violet mascots: slime, bat, robot. Transparent background. Output a square sheet divided into an EXACT invisible 4-column by 3-row equal-cell grid. Row1 only slime, row2 only bat, row3 only robot. Each cell contains the same full character at identical scale and anchored baseline within its row with generous transparent padding. Columns are four sequential frames of a seamless working loop: sitting behind a tiny charcoal computer keyboard, alternating small left and right paw/hand taps; slime uses tiny pseudopod hands, bat its little wing hands, robot its hands. Preserve original identities, face, ears, antennae, violet charcoal ivory colors and pixel art. Small gentle bounce and blink, not exaggerated. Exactly twelve sprites total, no extra rows, no text, labels, grid lines, scenery, shadows or glow beyond original. All sprites isolated from adjacent cells; crisp square pixel blocks; alpha transparent.
+> Use case: identity-preserve. Create a production pixel art animation sprite sheet based exactly on the three supplied violet mascots: slime, bat, robot. Transparent background. Output a square sheet divided into an EXACT invisible 4-column by 3-row equal-cell grid. Row1 only slime, row2 only bat, row3 only robot. Each cell contains the same full character at identical scale and anchored baseline within its row with generous transparent padding. Columns are four sequential frames of a seamless working loop: sitting behind a tiny charcoal computer keyboard, alternating small left and right paw/hand taps; slime uses tiny pseudopod hands, bats its little wing hands, robot its hands. Preserve original identities, face, ears, antennae, violet charcoal ivory colors and pixel art. Small gentle bounce and blink, not exaggerated. Exactly twelve sprites total, no extra rows, no text, labels, grid lines, scenery, shadows or glow beyond original. All sprites isolated from adjacent cells; crisp square pixel blocks; transparent alpha.
 
-## Vérification
+## Verification
 
-Tests unitaires du protocole et rejet des signaux étrangers/inconnus.
-Test Electron/xterm des transitions avec signaux synthétiques explicites et capture.
-Vrai CLI avec profil temporaire sans compte : signal `idle` effectivement reçu.
-Une génération réelle et ses demandes d’approbation restent à vérifier en usage :
-aucun prompt modèle n’est envoyé par le banc de test.
+Unit testing the protocol and rejecting foreign/unknown signals.
+Electron/xterm test of transitions with explicit synthetic signals and capture.
+True CLI with temporary profile without account: signal `idle` actually received.
+A real generation and its approval requests remain to be verified in use:
+no model prompt is sent by the test bench.
 
-## Sommeil et hauteur — ajustement
+## Sleep and height — adjustment
 
-Le compagnon est remonté de 58 à 68 pixels selon la hauteur du panneau, pour rester
-à distance des avertissements de quota et de la saisie. Les panneaux trop courts
-le masquent afin de préserver leur contenu.
+The companion moved from 58 to 68 pixels depending on the height of the panel, to stay
+Remote quota warnings and seizure. Panels too short
+hide it in order to preserve their content.
 
-`assets/mascots/sleeping-sheet.png` est une nouvelle planche transparente de quatre
-poses par personnage, réalisée avec l’outil intégré imagegen. Les originaux restent
-intacts. Après 45 secondes d’un état réel `idle` ou `done`, elle remplace le personnage
-éveillé. Un nouvel état de travail, attente ou erreur le réveille immédiatement.
-L’état inconnu ne déclenche jamais le sommeil. La Veilleuse suit ce même état visuel.
-Les temporisateurs sont libérés quand les compagnons sont supprimés.
+`assets/mascots/sleeping-sheet.png` is a new transparent board of four
+poses per character, created with the integrated imagegen tool. The originals remain
+intact. After 45 seconds of a real state `idle` or `done`, it replaces the character
+awake. A new working state, wait or error wakes it up immediately.
+The unknown state never triggers sleep. The Nightlight follows this same visual state.
+Timers are released when companions are deleted.
 
-Les tests Electron vérifient l’endormissement, la synchronisation et le réveil avec
-une horloge accélérée ; ils n’envoient pas de prompt à un compte réel.
+Electron tests check falling asleep, synchronization and waking up with
+a speeding clock; they do not send a prompt to a real account.
 
-Prompt de la planche de sommeil :
+Sleep board prompt:
 
 Use case: identity-preserve. Edit the three reference pixel mascots into a sleeping animation sprite sheet. Keep exactly the identities, violet charcoal ivory palette, pixel blocks and recognizable silhouette of the slime, bat, and robot. Fully transparent background, no shadows or scenery. Square sheet, EXACT invisible 4 columns by 3 rows of equally sized cells, each sprite centered at identical scale and baseline. Row1 slime, row2 bat, row3 robot. Four sequential frames per row: curled or settled sleeping, closed eyelids, gentle breathing inhale and exhale. Bat folds its wings and relaxes its huge ears, robot sits eyes closed with antennae relaxed, slime settles into a soft puddle. Small floating pixel Z shapes optional confined within each cell, no other text. No keyboard. All 12 sprites separated by generous transparent margins and inside their own cells, no visible grid. Calm, cute and understated, designed to loop at very slow speed in a dark terminal interface.
 
-## Écran de veille par conversation
+## Screen saver per conversation
 
-Le survol ou le focus clavier agrandit discrètement le compagnon. Un clic ouvre un écran de veille dans le panneau concerné : fond noir à 80 % d’opacité, léger flou et personnage centré, dimensionné selon la place disponible. Les autres panneaux restent utilisables. Un nouveau clic ou Échap ferme cet écran et rend le focus au terminal. Le même sprite continue de recevoir les états réels de Codex, sans interrompre son processus.
+Hovering or keyboard focus discreetly enlarges the companion. A click opens a screen saver in the relevant panel: black background with 80% opacity, slight blur and centered character, sized according to the available space. The other panels remain usable. Clicking or Esc again closes this screen and returns focus to the terminal. The same sprite continues to receive actual Codex states, without interrupting its process.
 
-## Présence et fin de tour
+## Presence and end of turn
 
-Le menu de reprise conserve un balancement décoratif léger. Le signal natif `done` déclenche un double rebond discret et deux petites étincelles pendant 1,8 seconde, sans affirmer que la tâche est réussie. Les mouvements et les étincelles respectent la réduction des animations du système.
+The resume menu maintains a light decorative swing. The native signal `done` triggers a discrete double bounce and two small sparks for 1,8 second, without asserting that the task is successful. Movements and sparks respect the reduction of system animations.
 
-Les trois expressions dessinées supplémentaires (curiosité, attente et réveil) sont détaillées avec les planches et prompts dans `docs/EXPRESSIONS-MASCOTTES.md`.
+The three additional drawn expressions (curiosity, waiting and awakening) are detailed with the plates and prompts in `docs/EXPRESSIONS-MASCOTTES.md`.
 
-## Respiration après la fin et sommeil fluide
+## Breathing after completion and smooth sleep
 
-Après la courte célébration, le signal `done` conserve une respiration décorative en boucle jusqu’au sommeil. La fin de la célébration ne laisse plus le personnage figé. Au sommeil, la première pose dessinée reste stable : une respiration continue de 5,5 secondes et un petit « z » flottant remplacent les changements de silhouette par à-coups. Le réveil et les autres états restent inchangés.
+After the short celebration, the signal `done` maintains decorative breathing in a loop until sleep. The end of the celebration no longer leaves the character frozen. During sleep, the first drawn pose remains stable: continuous breathing for 5,5 seconds and a small floating “z” replace the jerky changes in silhouette. Wake-up and other states remain unchanged.

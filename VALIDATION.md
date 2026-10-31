@@ -1,273 +1,273 @@
-# Validation locale — 22 octobre 2026
+# Local validation — 22 October 2026
 
-Environnement : Arch Linux / Hyprland, Node.js 26.12, Electron 45, node-pty 1.1.
-Recette graphique et ouverture utilisateur effectuées via XWayland (`--ozone-platform=x11`).
-Le lancement Wayland natif depuis l'environnement restreint de Codex rencontre des
-erreurs d'accès DRM/GPU ; il reste à vérifier depuis une session utilisateur normale.
+Environment: Arch Linux / Hyprland, Node.js 26.12, Electron 45, node-pty 1.1.
+Graphical recipe and user opening made via XWayland (`--ozone-platform=x11`).
+Launching native Wayland from the restricted Codex environment encounters problems
+DRM/GPU access errors; it remains to be verified from a normal user session.
 
-- `npm install` : installation et reconstruction native réussies ; audit npm sans vulnérabilité signalée.
-- `npm run check` : syntaxe des sources, scripts et tests vérifiée.
-- `npm test` : 4 tests réussis (arbres de panneaux, fermeture et équilibrage,
-  validation des descripteurs, restauration et permissions de fichier).
-- `npm run test:ui` : recette Electron réussie avec profil et HOME temporaires.
-  Vérification d'un vrai PTY et du dossier de travail, saisie clavier, compositeur,
-  divisions et redimensionnement, navigation entre projets sans arrêter les shells,
-  palette pilotée au clavier, radar, concentration et contraste monochrome.
-  Bouton Codex testé avec un exécutable fictif : terminal interactif, saisie,
-  réception de réponse, fin du processus et fermeture du panneau.
-  Annulation de fermeture d'un shell, sortie volumineuse de 1 Mio, validation IPC,
-  sauvegarde, redémarrage en pause et relance du shell également vérifiés.
-- Lanceur local et entrée de menu installés avec `npm run install:local`.
+- `npm install`: native installation and rebuild successful; npm audit with no vulnerabilities reported.
+- `npm run check`: syntax of sources, scripts and tests checked.
+- `npm test`: 4 tests passed (panel shafts, closing and balancing,
+  validation of descriptors, restoration and file permissions).
+- `npm run test:ui`: Successful Electron recipe with temporary profile and HOME.
+  Verification of a real PTY and the working folder, keyboard entry, composer,
+  divisions and resizing, navigation between projects without stopping shells,
+  keyboard-controlled palette, radar, focus and monochrome contrast.
+  Codex button tested with a fictitious executable: interactive terminal, input,
+  reception of response, end of the process and closing of the panel.
+  Canceling shell close, 1 Mio large output, IPC commit,
+  save, paused restart and shell restart also checked.
+- Local launcher and menu entry installed with `npm run install:local`.
 
-La recette ne vérifie pas la connexion à un vrai compte Codex, ses quotas,
-ni la reprise d'une ancienne conversation. Ces fonctions ne sont pas simulées
-dans le produit. Les contenus des vrais terminaux n'ont pas été capturés.
+The recipe does not check the connection to a real Codex account, its quotas,
+nor the resumption of an old conversation. These functions are not simulated
+in the product. The contents of real terminals were not captured.
 
-Le contrôle du flux limite la sortie en attente de rendu : node-pty est mis en
-pause au-delà de 128 K caractères non acquittés et reprend sous 64 K. La capture
-de recette est sous `artifacts/terminal-deck.png`, exclue de Git.
-
-
-## Révision du 23 octobre 2026
-
-- Interface compacte : retrait du compositeur et du pied de page ; une seule barre
-  supérieure avec projet, titre actif et commandes essentielles. Les contrôles
-  secondaires restent accessibles depuis Ctrl K. Onglets affichés en vue agrandie.
-- Titre natif OSC 0/2 affiché dans le panneau, l'en-tête, les onglets et le radar.
-  Le lancement Codex demande `tui.terminal_title=["thread-title"]`, sans modifier
-  la configuration globale ni lire les données de conversation.
-- Ctrl Retour arrière : suppression du mot précédent vérifiée dans un vrai shell.
-- Ctrl Maj V : collage vérifié dans le shell et un programme interactif ; le canal
-  presse-papiers est remplacé uniquement dans l'instance de test par un texte fictif.
-- Maj Entrée : séquence distincte d'Entrée vérifiée à travers un vrai PTY en mode brut.
-  Ctrl Retour arrière et le collage protégé sont également vérifiés octet par octet.
-- Titres initiaux et renommage testés avec un faux Codex, sans compte ni appel modèle.
-- `npm run check`, les 4 tests unitaires et la recette Electron : réussis.
-- Rechargement de l’interface puis nouvelle commande dans le même PTY : réussi,
-  sans arrêt des deux shells ouverts.
+Flow control limits output awaiting rendering: node-pty is set
+pause beyond 128 K unacknowledged characters and resume below 64 K. Capture
+recipe is under `artifacts/terminal-deck.png`, excluded from Git.
 
 
-## Fermeture directe et panneaux réduits — 23 octobre 2026
+## Review of October 23 2026
 
-Fermeture immédiate de la fenêtre et des panneaux, sans dialogue. Ctrl Q ferme
-le panneau sous la souris et Ctrl T le réduit sans tuer le processus. Les panneaux
-réduits restent restaurables par leur titre ; leur état est mémorisé.
+- Compact interface: removal of composer and footer; a single bar
+  superior with project, active title and essential orders. Controls
+  secondary remain accessible from Ctrl K. Tabs displayed in enlarged view.
+- Native OSC title 0/2 displayed in panel, header, tabs and radar.
+  Codex launch asks for `tui.terminal_title=["thread-title"]`, without modifying
+  global configuration nor read conversation data.
+- Ctrl Backspace: deletion of the previous word checked in a real shell.
+- Ctrl Shift V: paste verified in the shell and an interactive program; the channel
+  clipboard is replaced only in the test instance with dummy text.
+- Shift Input: distinct sequence of Input checked through a real PTY in raw mode.
+  Ctrl Backspace and Protected Paste are also checked byte by byte.
+- Initial titles and renaming tested with a fake Codex, without account or model call.
+- `npm run check`, the 4 unit tests and the Electron recipe: passed.
+- Reloading the interface then new command in the same PTY: successful,
+  without stopping the two open shells.
 
-La recette couvre un focus clavier différent du panneau survolé, l'absence d'action
-hors panneau, la réduction de tous les panneaux, la continuation d'un shell masqué,
-la restauration de la disposition, et la fermeture de fenêtre avec un shell actif.
-Un faux dialogue de confirmation fait échouer le test s'il est appelé.
+
+## Direct closure and reduced panels — 23 October 2026
+
+Immediate closing of the window and panels, without dialogue. Ctrl Q closes
+the panel under the mouse and Ctrl T minimizes it without killing the process. The panels
+reduced remain restorable by their title; their state is memorized.
+
+Recipe covers different keyboard focus than hover panel, lack of action
+off-panel, collapsing all panels, continuing a hidden shell,
+restoring the layout, and closing window with an active shell.
+A false confirmation dialog causes the test to fail if called.
 
 
-## Version 0.2 — 23 octobre 2026
+## Version 0.2 — 23 October 2026
 
-Cause du collage texte : `clipboard.readText()` retourne une Promise sous Electron
-45. La lecture attend maintenant cette Promise avant de limiter le texte. L’écriture
-attend également sa Promise pour transmettre les erreurs réelles.
+Cause of text pasting: `clipboard.readText()` returns a Promise under Electron
+45. The reading now waits for this Promise before limiting the text. Writing
+also expects its Promise to pass on actual errors.
 
-La recette utilise désormais Ozone headless, sans DISPLAY ni WAYLAND_DISPLAY :
-le presse-papiers natif d’Electron est propre à ce processus et ne touche pas au
-bureau. Le canal IPC de production reste intact. Copier/coller Unicode et texte
-long (borne de 60 000 caractères), puis insertion clavier dans shell et PTY brut,
-sont testés avec les vraies API. Aucun faux `readText` ou canal IPC de remplacement.
+The recipe now uses Ozone headless, without DISPLAY or WAYLAND_DISPLAY:
+Electron's native clipboard is specific to this process and does not touch the
+office. The production IPC channel remains intact. Copy/paste Unicode and text
+long (limit of 60 000 characters), then keyboard insertion in shell and raw PTY,
+are tested with real APIs. No fake `readText` or replacement IPC channel.
 
-La recette du vrai Codex 0.164.0, avec profil temporaire et fournisseur local fictif,
-confirme : `resume --all` au démarrage ; Échap conserve le processus et crée le
-nouveau chat ; `/resume` affiche All grâce à l’adaptateur ciblant le filtre natif.
-Aucun compte n’est utilisé et aucun prompt de génération n’est envoyé.
+The recipe for the real Codex 0.164.0, with temporary profile and fictitious local supplier,
+confirm: `resume --all` on startup; Escape keeps the process and creates the
+new cat; `/resume` displays All using the adapter targeting the native filter.
+No account is used and no build prompt is sent.
 
-Le style reprend les principes de Firefox/Périgée, sans modifier leurs fichiers :
-noir profond, lignes fines, sessions à gauche, icônes SVG et variante Périgée
-facultative. Les identifiants internes de chats non nommés sont masqués au profit
-du libellé Codex.
+The style uses the principles of Firefox/Perigee, without modifying their files:
+deep black, thin lines, left sessions, SVG icons and Perigee variant
+optional. Internal IDs of unnamed chats are hidden for the benefit
+of the wording Codex.
 
-L’application des préférences est testée sur un AGENTS temporaire : contenu antérieur
-préservé, sauvegarde créée, deuxième application sans doublon. Le fichier global
-réel n’a pas été modifié par l’agent.
+The application of preferences is tested on a temporary AGENT: previous content
+preserved, backup created, second application without duplicates. The global file
+real has not been modified by the agent.
 
-Contrôles 0.2 : `npm run check`, 7 tests unitaires, `npm run test:ui` et
-`npm run test:codex` réussis. Captures sur données fictives : `empty-workspace.png`,
-`terminal-deck.png`, `perigee.png` et `native-codex-picker.png` sous `artifacts/`.
+0.2 checks: `npm run check`, 7 unit tests, `npm run test:ui` and
+`npm run test:codex` successful. Captures on fictitious data: `empty-workspace.png`,
+`terminal-deck.png`, `perigee.png` and `native-codex-picker.png` under `artifacts/`.
 
 
 ## Version 0.3 — popup La Veilleuse
 
-- Popup non modal et déplaçable : quotas Codex, fenêtres, échéances annoncées,
-  ancienneté du relevé, rafraîchissement manuel et automatique toutes les cinq minutes.
-- Normalisation sans conversion des valeurs absentes en 0 ; cache, erreurs,
-  dépassement de délai et dernier relevé conservé couverts par les tests.
-- Test du temps accéléré : une nouvelle lecture à cinq minutes ; aucune lecture
-  supplémentaire une fois le popup fermé. La recette utilise une source fictive,
-  séparée du véritable presse-papiers Electron déjà vérifié.
-- Le vrai CLI accepte `initialize` puis reçoit `account/rateLimits/read` ; avec
-  un CODEX_HOME temporaire sans compte, il refuse correctement le relevé pour
-  absence d’authentification. Aucun prompt modèle ou thread n’est créé.
-- Lecture avec le profil réel : impossible dans l’environnement de l’agent, le CLI
-  s’arrêtant avant les réponses avec une erreur de système de fichiers en lecture
-  seule. Aucun quota utilisateur réel n’a donc été validé ici.
-- Capture de recette : `artifacts/usage-popup.png` (pourcentages fictifs).
+- Non-modal and movable popup: Codex quotas, windows, announced deadlines,
+  age of the statement, manual and automatic refresh every five minutes.
+- Normalization without conversion of absent values ​​to 0; cache, errors,
+  time limit and last statement kept covered by the tests.
+- Accelerated time test: a new reading at five minutes; no reading
+  additional once the popup is closed. The recipe uses a fictional source,
+  separated from the already verified real Electron clipboard.
+- The real CLI accepts `initialize` then receives `account/rateLimits/read`; with
+  a temporary CODEX_HOME without an account, it correctly refuses the statement for
+  lack of authentication. No template or thread prompt is created.
+- Reading with the real profile: impossible in the agent environment, the CLI
+  stopping before responses with read filesystem error
+  alone. No real user quota has therefore been validated here.
+- Recipe capture: `artifacts/usage-popup.png` (fictitious percentages).
 
-### Ajustements du 23 octobre
+### October 23 adjustments
 
-- Les jauges affichent le quota restant (`100 - usedPercent`), comme `/status`.
-- Le test UI vérifie la valeur accessible et l’ancrage initial en bas à droite.
-- Deck lance Codex avec `tui.keymap.composer.queue=[]`, sans bloquer Tab dans les listes ou le shell. Le vrai CLI accepte ce réglage au lancement ; l’envoi pendant une génération réelle n’est pas testé.
-- La configuration globale `.codex/config.toml` reste à modifier depuis la session utilisateur : ce dossier est en lecture seule ici.
+- Gauges display remaining quota (`100 - usedPercent`), such as `/status`.
+- The UI test checks the accessible value and the initial anchor at the bottom right.
+- Deck launches Codex with `tui.keymap.composer.queue=[]`, without blocking Tab in lists or shell. The real CLI accepts this setting at launch; sending during an actual build is not tested.
+- The global configuration `.codex/config.toml` remains to be modified from the user session: this folder is read-only here.
 
-## Compagnons animés
+## Animated Companions
 
-Voir `docs/MASCOTTES.md` : protocole OSC 7501, transitions synthétiques dans xterm, signal de repos du vrai CLI, et limites de validation sans génération réelle. Les préférences de réduction des mouvements sont vérifiées dans Electron.
+See `docs/MASCOTTES.md`: OSC protocol 7501, synthetic transitions in xterm, real CLI idle signal, and commit limits without actual generation. Motion reduction preferences are checked in Electron.
 
-## Placement, synchronisation et lancement direct
+## Placement, synchronization and direct launch
 
-- Mascotte de 96 pixels au-dessus de Quotas dans la barre latérale ; personnage et signaux synchronisés avec la Veilleuse, y compris après changement de Codex actif.
-- Recette du vrai CLI lancée sans clic sur l’accueil : sélecteur All ouvert automatiquement, Échap et `/resume` conservés. Aucun prompt modèle.
-- Super Maj Entrée ajouté à Hyprland ; rechargement sans erreur, liaison active confirmée avec `hyprctl binds`.
+- Mascot of 96 pixels above Quotas in the sidebar; character and signals synchronized with the Nightlight, including after changing the active Codex.
+- Real CLI recipe launched without clicking on the home page: All selector opened automatically, Esc and `/resume` retained. No template prompt.
+- Super Shift Enter added to Hyprland; reload without error, active link confirmed with `hyprctl binds`.
 
-- Focus au survol vérifié avec une vraie saisie shell sans clic ; la sélection suit également le focus clavier. Le compagnon de 96 pixels est placé dans la barre latérale et les panneaux conservent toute leur hauteur.
+- Focus on hover checked with true no-click shell input; the selection also follows keyboard focus. 96 pixels companion is placed in the sidebar and the panels maintain their full height.
 
-## Choix final — variante fixe
+## Final choice — fixed variant
 
-- Un compagnon par terminal Codex, ancré en bas à droite ; la marge latérale évite de recouvrir les cellules du terminal.
-- Deux compagnons simultanés vérifiés, avec des états indépendants ; la Veilleuse suit le panneau actif.
-- L’ancien compagnon de la barre latérale est retiré. Les deux maquettes HTML sont conservées dans `docs/demos/`.
+- One companion per Codex terminal, anchored at the bottom right; the side margin avoids covering the terminal cells.
+- Two verified simultaneous companions, with independent states; The Night Light follows the active panel.
+- The old sidebar companion is removed. Both HTML mockups are kept in `docs/demos/`.
 
-## Hauteur, sommeil et reprise partagée
+## Height, sleep and shared recovery
 
-- Compagnon remonté ; nouvelle planche de sommeil transparente.
-- 45 secondes au repos : sommeil synchronisé avec la Veilleuse ; reprise du travail : réveil immédiat. Vérifié dans Electron avec l’horloge accélérée.
-- Nouveau test avec un vrai socket local : choix du service partagé explicite.
-- Recette de deux clients réels sur un service de test : bloquée par le répertoire de rendez-vous volontairement inaccessible dans le sandbox ; aucun contournement. Voir `docs/VERROUS.md`.
+- Companion reassembled; new transparent sleep board.
+- 45 seconds at rest: sleep synchronized with the Night Light; return to work: immediate awakening. Checked in Electron with accelerated clock.
+- New test with a real local socket: choice of explicit shared service.
+- Recipe from two real clients on a test service: blocked by the intentionally inaccessible appointment directory in the sandbox; no bypass. See `docs/VERROUS.md`.
 
-## Compagnon interactif sans bande latérale
+## Sideband-free interactive companion
 
-- Suppression des 112 pixels réservés à droite : retour à la marge normale de 5 pixels.
-- Compagnon de 96 pixels, décalé à gauche ; clic pour agrandir à 144 pixels.
-- Test UI du clic, second clic, activation clavier avec Entrée et réduction avec Échap, ainsi que des dimensions et du maintien des animations natives.
+- Deletion of 112 pixels reserved on the right: return to the normal margin of 5 pixels.
+- Companion of 96 pixels, shifted to the left; click to enlarge to 144 pixels.
+- UI test of click, second click, keyboard activation with Enter and reduction with Esc, as well as dimensions and maintenance of native animations.
 
-## Écran de veille du chat
+## Cat screensaver
 
-La recette Electron vérifie le grossissement au survol, la couverture du seul panneau concerné, l’opacité noire de 80 %, le clic de fermeture, l’activation clavier et Échap. Le compagnon conserve son état et le processus du terminal continue.
+The Electron recipe checks the magnification on hover, the coverage of the only affected panel, the black opacity of 80%, the click to close, the keyboard activation and Esc. The companion maintains its state and the terminal process continues.
 
-## Mouvement du sélecteur et réaction de fin
+## Selector movement and end reaction
 
-Le mouvement décoratif du compagnon est vérifié dans le vrai sélecteur Codex. Les tests UI vérifient séparément le signal de fin, le rebond et les étincelles, avec les mêmes sprites et sans prompt modèle.
+The companion's decorative move is checked in the real Codex selector. The UI tests check the end signal, bounce and sparks separately, with the same sprites and without a template prompt.
 
-## Expressions dessinées
+## Cartoon expressions
 
-- Chargement et dimensions des trois nouvelles planches vérifiés dans Electron.
-- Curiosité dans le vrai sélecteur natif, attente sur signal `blocked`, séquence de réveil et retour au travail vérifiés.
-- Une intervention pendant le réveil annule immédiatement cette pose ; son temporisateur ne rétablit pas une ancienne expression.
-- Synchronisation avec les quotas et respect de la réduction des mouvements vérifiés avec les signaux synthétiques de recette, sans prompt modèle.
+- Loading and dimensions of the three new boards checked in Electron.
+- Curiosity in the real native selector, waiting on signal `blocked`, wake-up sequence and return to work verified.
+- An intervention during awakening immediately cancels this pose; its timer does not restore an old expression.
+- Synchronization with quotas and compliance with the reduction of movements verified with synthetic recipe signals, without model prompt.
 
-## Continuité du mouvement
+## Continuity of movement
 
-Les tests Electron échantillonnent les transformations CSS après la fin de la célébration : la respiration continue effectivement. Pour le sommeil, ils vérifient un changement de transformation avec un timing continu `ease-in-out`, sans changement de frame ou de position de la planche.
+Electron tests sample CSS transformations after the celebration ends: breathing does indeed continue. For sleep, they check a transformation change with continuous timing `ease-in-out`, without a change in frame or board position.
 
-## Atelier local des compagnons
+## Local companion workshop
 
-- Modèle : limites des cadres, masques, rechargement des JSON et dimensions de toutes les planches vérifiés.
-- Serveur : routes limitées, lecture seule, refus des chemins arbitraires et CSP vérifiés.
-- Recette réelle Electron : sélection des personnages, glissement du cadre, clavier, pelure, vitesse, sauvegarde et rechargement, téléchargement natif de PNG/JSON, réimport et disposition sur écran étroit.
-- Empreintes des six images sources identiques avant et après la recette. Aucun compte, aucun prompt, aucune donnée de terminal réelle utilisée.
-- Le rendu des poses source est distinct des transformations décoratives de Deck ; les exports ne sont pas appliqués à l’application.
+- Model: frame limits, masks, JSON reloading and dimensions of all boards checked.
+- Server: limited routes, read-only, refusal of arbitrary paths and CSP checked.
+- Actual Electron recipe: character selection, frame dragging, keyboard, skin, speed, save and reload, native PNG/JSON download, reimport and narrow screen layout.
+- Fingerprints of the six identical source images before and after the recipe. No accounts, no prompts, no actual terminal data used.
+- Rendering of source poses is distinct from Deck's decorative transformations; exports are not applied to the application.
 
-## Sessions, attention et historique — 23 octobre 2026
+## Sessions, attention and history — 23 October 2026
 
-- `npm run check` et `npm test` : validation des métadonnées, compagnon borné à trois choix, historique limité à 80 entrées, réécriture sans contenu de terminal.
-- Recette Electron/xterm/PTY isolée : recherche d’une session, favori puis filtre, choix Vesper, sauvegarde effective dans le profil temporaire, synchronisation des quotas, restauration au rechargement.
-- Signaux OSC de test injectés dans le vrai parseur xterm : attente → entrée d’attention → retour au panneau et acquittement ; travail/attente → fin → une entrée d’historique. Rechargement avec ancien buffer : aucune nouvelle entrée ou alerte.
-- La recette ne contacte aucun compte Codex. Les signaux d’activité de ce scénario sont des fixtures explicites ; aucune tâche modèle réelle n’est envoyée.
-- Les notifications système sont conditionnées à Electron `Notification.isSupported()` et au focus de la fenêtre. Leur affichage et leur clic sous le bureau Hyprland personnel ne sont pas validés par la recette headless ; la navigation dans l’application l’est.
-- Dans cette révision du 23 octobre, le compagnon et les favoris suivaient un panneau Deck. La révision du 24 octobre ci-dessous ajoute une association à l’identité native reconnue, sans indexer tous les chats externes.
+- `npm run check` and `npm test`: validation of metadata, companion limited to three choices, history limited to 80 entries, rewrite without terminal content.
+- Isolated Electron/xterm/PTY recipe: search for a session, favorite then filter, Vesper choice, effective save in the temporary profile, synchronization of quotas, restoration on reload.
+- OSC test signals injected into the real xterm parser: wait → attention entry → return to panel and acknowledgment; work/wait → end → a history entry. Reloading with old buffer: no new entry or alert.
+- The recipe does not contact any Codex accounts. The activity signals in this scenario are explicit fixtures; no actual template jobs are sent.
+- System notifications are conditional on Electron `Notification.isSupported()` and window focus. Their display and click under the personal Hyprland desktop are not validated by the headless recipe; navigating the app is.
+- In this revision from October 23, Companion and Favorites followed a Deck panel. The October 24 revision below adds an association to the recognized native identity, without indexing all external chats.
 
-## Amélioration des animations — 23 octobre 2026
+## Improved animations — 23 October 2026
 
-- Recette réelle Electron : les trois personnages ont un mouvement de frappe distinct ; échantillonnage de la transformation à deux instants pour vérifier qu’elle change.
-- Fondu : opacité intermédiaire vérifiée sur la couche navigateur et retrait après la fin de son animation.
-- Fin de tour : respiration toujours active après le bond. Sommeil : cadrage fixe et mouvement continu, sans fonction de timing par sauts.
-- Conservation des contrôles existants : réveil interruptible, état et pose synchronisés avec les quotas, agrandissement par survol, écran de veille par clic et retour par Échap, réduction des mouvements.
-- Les signaux de recette sont fictifs, injectés dans le vrai xterm ; aucun compte ni prompt modèle utilisé.
+- Actual Electron Recipe: All three characters have a distinct punching move; sampling the transformation at two times to verify that it changes.
+- Fade: intermediate opacity checked on the browser layer and removed after the end of its animation.
+- End of turn: breathing still active after the jump. Sleep: fixed framing and continuous movement, without jump timing function.
+- Conservation of existing controls: interruptible wake-up, state and pose synchronized with quotas, enlargement by hover, screen saver by click and return by Esc, reduction of movements.
+- The recipe signals are fictitious, injected into the real xterm; no account or prompt template used.
 
-## Livraison du 24 octobre 2026 — conversation, confort et poses
+## Delivery of 24 October 2026 — conversation, comfort and poses
 
-- Recette du vrai CLI installé, sans compte ni prompt : `thread-id` + `thread-title` accepté, extraction du préfixe natif et de l’UUID complet de la conversation non nommée, identifiant masqué dans le titre visible ; sélecteur All initial et `/resume` préservés.
-- Recette Electron/xterm : même identité dans deux panneaux, partage d’un choix Byte puis Vesper et du favori, renommage, autre chat portant le même nom sans héritage du favori, retour au premier chat, fermeture puis reprise explicite du favori par UUID. Les identités et sorties de ces scénarios sont des fixtures locales.
-- Ctrl Page précédente/suivante, champ de recherche protégé du focus au survol, menu compact à 920 × 620 et Échap : vérifiés dans Electron. Les anciens parcours de collage natif, saisie shell/Codex et raccourcis restent inclus.
-- Salut au repos, refus de saluer pendant le travail/sommeil, regard, bâillement à 43,2 s, sommeil à 45 s et interruption native : vérifiés. Les PNG sont décodés par le navigateur ; aperçu des six nouvelles poses représentatives dans `artifacts/new-companion-poses.png`.
-- Atelier : les deux planches sont incluses dans la liste de sources ; exports/imports PNG/JSON, cadrage et empreintes des sources vérifiés par `npm run test:studio`.
-- Lecture D-Bus du service de notifications personnel : Mako répond à `GetServerInformation`. Aucun test d’affichage ou de clic d’une notification réelle n’est revendiqué.
+- Recipe for the real CLI installed, without account or prompt: `thread-id` + `thread-title` accepted, extraction of the native prefix and the full UUID of the unnamed conversation, identifier hidden in the visible title; initial All selector and `/resume` preserved.
+- Electron/xterm recipe: same identity in two panels, sharing a Byte then Vesper choice and the favorite, renaming, another cat with the same name without inheritance of the favorite, return to the first cat, closing then explicit resumption of the favorite by UUID. The identities and outputs of these scenarios are local fixtures.
+- Ctrl Page Previous/Next, search field protected from focus on hover, compact menu at 920 × 620 and Esc: checked in Electron. Legacy native paste paths, shell/Codex input, and shortcuts remain included.
+- Hi at rest, refusal to greet while working/sleeping, staring, yawning at 43,2 s, sleeping at 45 s, and native interrupt: checked. PNGs are decoded by the browser; preview of the six new representative poses in `artifacts/new-companion-poses.png`.
+- Workshop: both plates are included in the list of sources; PNG/JSON exports/imports, framing and source fingerprinting checked by `npm run test:studio`.
+- D-Bus reading of the personal notification service: Mako responds to `GetServerInformation`. No testing of viewing or clicking an actual notification is claimed.
 
-## Ctrl + glisser les panneaux
+## Ctrl + drag panels
 
-- Tests de l’arbre : échange, insertion sur quatre bords, conservation de tous les identifiants dont les panneaux réduits, maintien des ratios hors insertion, arbres inchangés pour cibles invalides.
-- Vrais gestes pointeur dans Electron : échange puis retour, placement au-dessus puis à droite, aperçu, Échap, relâchement de Ctrl et dépôt hors cible. Sans Ctrl, aucun changement d’arbre.
-- Le même shell imprime le même PID avant et après les déplacements ; aucun processus n’est recréé. La disposition réellement écrite dans le profil temporaire correspond à l’arbre affiché. Les scénarios de rechargement et relance de l’application restent dans la même recette.
-- Capture utile : `artifacts/pane-drag-preview.png`, uniquement données synthétiques de recette.
+- Tree tests: exchange, insertion on four edges, conservation of all identifiers including reduced panels, maintenance of ratios excluding insertion, unchanged trees for invalid targets.
+- Real pointer gestures in Electron: swap then back, place above then right, preview, escape, release Ctrl and drop off target. Without Ctrl, no tree change.
+- The same shell prints the same PID before and after moves; no process is recreated. The layout actually written in the temporary profile corresponds to the displayed tree. The application reload and restart scenarios remain in the same recipe.
+- Useful capture: `artifacts/pane-drag-preview.png`, only synthetic recipe data.
 
-## Démarrage automatique de tous les Codex — 25 octobre 2026
+## Autostart all Codexes — 25 October 2026
 
-- `npm run test:startup` : 1, 3 et 16 panneaux Codex, vrais Electron et PTY avec un CLI fictif ; chaque panneau démarre, aucun panneau visible ne reste sur « Lancer Codex ». Le panneau sélectionné, les réductions, les shells en pause et les autres projets sont conservés. Un rechargement ne crée pas de panneau supplémentaire et réattache les processus.
-- Le premier vrai test multi-CLI sur un CODEX_HOME neuf a révélé une course dans les migrations SQLite natives de Codex. Deck attend désormais l’écran natif ou le signal d’activité du premier TUI avant de lancer les autres (attente plafonnée à 10 s). Aucune base ni aucun verrou ne sont modifiés par Deck.
-- Détection de l’en-tête compact `Filter: All … Sort:` ajoutée. Le passage depuis Cwd reste conditionné aux attributs natifs de sélection et de focus ; aucune touche n’est envoyée dans un autre écran.
-- `npm run test:codex` vérifie trois vrais CLI sans compte, fournisseur local fictif et sans prompt modèle. Tous arrivent sur All ; Échap → nouveau chat et `/resume` → All sont ensuite vérifiés dans le premier panneau.
-- Vérification de syntaxe, 20 tests unitaires et recette habituelle Electron/PTY exécutés.
+- `npm run test:startup`: 1, 3 and 16 Codex panels, real Electron and PTY with a fictitious CLI; each panel starts, no visible panel remains on “Launch Codex”. The selected panel, collapses, paused shells, and other projects are retained. A reload does not create an additional panel and reattach processes.
+- The first real multi-CLI test on a new CODEX_HOME revealed a race in Codex's native SQLite migrations. Deck now waits for the native screen or activity signal of the first TUI before launching the others (wait capped at 10 s). No bases or locks are modified by Deck.
+- Added `Filter: All … Sort:` compact header detection. The transition from Cwd remains conditional on the native selection and focus attributes; no keystrokes are sent to another screen.
+- `npm run test:codex` checks three real CLIs without an account, a fictitious local provider and without a template prompt. All arrive on All; Escape → new chat and `/resume` → All are then checked in the first panel.
+- Syntax check, 20 unit tests and usual Electron/PTY recipe executed.
 
-## Fox Loaf et Corbac mini — 25 octobre 2026
+## Fox Loaf and Corbac mini — 25 October 2026
 
-- Catalogue partagé à cinq entrées, indices 0/1/2 conservés, choix 3 et 4 acceptés dans les descripteurs et fiches de conversation. Les attributions automatiques historiques restent au modulo 3.
-- Recette Electron/xterm/PTY : cinq cartes de choix et cinq aperçus tournants sans Codex. Fox Loaf et Corbac mini choisis via l’interface, synchronisés entre deux panneaux de la même conversation et les quotas ; valeurs 3/4 vérifiées dans le profil réellement sauvegardé via IPC.
-- Poses : atlas correct au clavier et en attente, refus de saluer pendant l’attente, salut au repos, bâillement à 43,2 s, sommeil à 45 s sur la dernière pose stable, réveil puis retour au clavier. La réduction des mouvements conserve une pose fixe.
-- Écran de veille de chaque nouvel animal ouvert au clic puis fermé par Échap. Captures synthétiques `artifacts/fox-loaf-screensaver.png`, `artifacts/corbac-mini-screensaver.png` et `artifacts/five-companion-choices.png`.
-- Cadrage des 48 sprites inspecté en lecture seule sur les bandes alpha ; origines corrigées dans les métadonnées sans retoucher les PNG. Capture comparative : `artifacts/new-companion-poses.png`.
-- Atelier : cinq personnages, changement rapide expression/personnage, résolution des sources, réglages séparés entre clavier et attente, export Corbac mini PNG/JSON, import des réglages vers le bon état du même atlas, sommeil sur une pose, retour à une planche du trio. Empreintes des dix sources préservées.
-- `npm run check`, 21 tests unitaires, `npm run test:ui` et `npm run test:studio` exécutés. Aucun compte ni prompt modèle utilisé par les recettes ; les assets sont issus de l’outil intégré imagegen.
-
-
-## Accès aux compagnons — 25 octobre 2026
-
-- Bouton latéral **Compagnons** ajouté pour rendre le choix visible sans connaître le symbole ♧.
-- Recette Electron : collection de cinq cartes visible sans Codex, puis ouverture du choix du Codex actif par ce bouton. Depuis un shell sélectionné, choix Fox Loaf et Corbac mini appliqués au Codex du projet et sauvegardés ; les autres accès restent disponibles.
+- Shared catalog with five entries, indices 0/1/2 preserved, choices 3 and 4 accepted in descriptors and conversation cards. Historical automatic allocations remain at modulo 3.
+- Electron/xterm/PTY recipe: five choice cards and five rotating previews without Codex. Fox Loaf and Corbac mini chosen via the interface, synchronized between two panels of the same conversation and the quotas; 3/4 values ​​checked in the profile actually saved via IPC.
+- Poses: correct atlas on keyboard and waiting, refusal to greet while waiting, greeting while resting, yawning at 43,2 s, sleeping at 45 s on the last stable pose, waking up then returning to the keyboard. Reducing movement maintains a fixed pose.
+- Screen saver for each new animal opened by clicking then closed by Escape. Synthetic captures `artifacts/fox-loaf-screensaver.png`, `artifacts/corbac-mini-screensaver.png`, and `artifacts/five-companion-choices.png`.
+- 48 sprite framing inspected as read-only on alpha bands; origins corrected in the metadata without retouching the PNGs. Comparative capture: `artifacts/new-companion-poses.png`.
+- Workshop: five characters, quick expression/character change, source resolution, separate settings between keyboard and wait, export Corbac mini PNG/JSON, import of settings to the good state of the same atlas, sleep on a pose, return to a board of the trio. Footprints of the ten springs preserved.
+- `npm run check`, 21 unit tests, `npm run test:ui` and `npm run test:studio` executed. No account or prompt template used by recipes; the assets come from the integrated imagegen tool.
 
 
-## Harmonisation graphique — 25 octobre 2026
+## Access to companions — 25 October 2026
 
-- Fox Loaf et Corbac mini redessinés avec l’outil intégré imagegen à partir du trio et des atlas précédents : formes simplifiées, yeux et contours plus francs, couleurs orange/charbon conservées. Les anciens PNG restent présents ; les sources actives utilisent des noms versionnés.
-- Cadrages de six rangées vérifiés sur les bandes alpha sans retouche de PNG, puis présence et poses observées dans le vrai rendu Electron. Le masque gauche du renard est partagé avec l’atelier, exporté en JSON et appliqué aux PNG rendus.
-- Tests de modèle : masque borné à la taille du cadre et aller-retour du manifeste. Recette atelier : masque gauche actif = bande transparente, désactivation = pixels visibles, rétablissement = bande transparente. Export Corbac mini PNG/JSON puis import vers la bonne expression de la source versionnée.
-- Les choix 3/4, la synchronisation entre panneaux/quotas, le salut, le bâillement, le sommeil fixe, le réveil et l’écran de veille restent dans la recette UI. Les compteurs de tests ne représentent pas une validation du nombre exact de couleurs ou d’une grille pixel manuelle.
-- `npm run check`, 21 tests unitaires, `npm run test:ui` et `npm run test:studio` exécutés. Les captures `five-companion-choices.png` et `new-companion-poses.png` montrent le rendu actuel ; leurs anciennes versions sont conservées avec le suffixe `-v1`.
+- **Companions** side button added to make the choice visible without knowing the ♧ symbol.
+- Electron Recipe: collection of five cards visible without Codex, then opening the choice of active Codex using this button. From a selected shell, choices Fox Loaf and Corbac mini applied to the project Codex and saved; other accesses remain available.
 
-## Migration Tauri — 26 octobre 2026
 
-- Source Rust dans `src-tauri`, interface partagée, construction npm/Cargo, profil séparé et lanceur parallèle récupérable.
-- Git : tests de lecture d’un vrai dépôt, noms avec espaces/retours à la ligne/renommages, absence d’index créé ; instructions globales sauvegardées et idempotentes sur un AGENTS temporaire.
-- Comparaison mémoire réelle mais synthétique : trois shells, Xvfb sans GPU, cinq secondes au repos. Electron 218 Mio PSS application ; Tauri release 333,4 Mio. Aucun gain PSS démontré ; ne pas confondre RSS cumulée et mémoire attribuable.
-- La session de bureau et ses processus ne sont pas visibles dans l’environnement de recette ; `npm run memory` est prévu pour cette mesure sur l’hôte.
-- Recette native Tauri : WebKitGTK réel, vrais PTY, shell/redimensionnement/fermeture, clavier X11 via xdotool, presse-papiers propre à Xvfb, Codex/protocole de quotas fictifs, cinq pets et sauvegarde, atelier isolé. Aucun prompt réel.
-- Le banc Tauri utilise Xvfb et xdotool installés uniquement sous `/tmp/deck-native-tools` ; variables `DECK_XVFB` et `DECK_XDOTOOL` pour les fournir autrement. Playwright de comparaison sous `/tmp/deck-ui-tools`. Aucun changement du bureau requis.
-- Les notifications de bureau, Wayland réel et la reprise d’un compte réel restent à vérifier en usage. La recette partagée de verrou antérieure reste bloquée dans le sandbox ; aucune nouvelle promesse à ce sujet.
+## Graphic harmonization — 25 October 2026
 
-Résultat final de la migration : 25 tests JavaScript et 7 tests Rust passent.
-Syntaxe JavaScript et format Rust vérifiés. Recettes Electron UI, démarrage 1/3/16
-et atelier passent. Recette Tauri complète : raccourcis réellement envoyés par
-xdotool, presse-papiers natif isolé, export PNG écrit par Rust et signature vérifiée,
-refus des commandes Deck depuis l’atelier, fermeture de fenêtre native avec code 0.
-Le binaire release normal a aussi été lancé séparément : absence des commandes
-native_smoke dans le binaire, fenêtre WebKitGTK, Ctrl Maj N et saisie dans un shell
-réel vérifiés (`scripts/tauri-production-smoke.cjs`, capture `artifacts/tauri-release.png`).
-Installation parallèle effectuée : lanceur `terminal-deck-tauri`, menu dédié,
-profil Electron copié une seule fois avec sauvegarde privée. Lanceur principal
-Electron conservé en attendant le choix de Toubi, compte tenu du résultat mémoire.
-Aucun commit créé et aucun AGENTS global modifié automatiquement.
+- Fox Loaf and Corbac mini redesigned with the integrated imagegen tool from the trio and previous atlases: simplified shapes, sharper eyes and contours, orange/charcoal colors preserved. The old PNGs remain present; active sources use versioned names.
+- Framing of six rows checked on the alpha bands without retouching PNG, then presence and poses observed in the real Electron rendering. The fox's left mask is shared with the workbench, exported as JSON and applied to the rendered PNGs.
+- Model tests: mask limited to the size of the frame and round trip of the manifest. Workshop recipe: active left mask = transparent band, deactivation = visible pixels, restoration = transparent band. Export Corbac mini PNG/JSON then import to the correct expression from the versioned source.
+- 3/4 choices, synchronization between panels/quotas, hi, yawn, fixed sleep, wake up and screen saver remain in the UI recipe. The test counters do not represent a validation of the exact number of colors or a manual pixel grid.
+- `npm run check`, 21 unit tests, `npm run test:ui` and `npm run test:studio` executed. The screenshots `five-companion-choices.png` and `new-companion-poses.png` show the current rendering; their older versions are kept with the suffix `-v1`.
 
-## Dictée intégrée — 27 octobre 2026
+## Tauri migration — 26 October 2026
 
-- Nouvelle carte Electron Linux : F9 / micro, capture avec niveau audio, F9 ou Entrée pour transcrire, texte modifiable, puis Envoyer/Entrée. Échap annule. Pas d’envoi automatique sur silence ou bruit, pas d’interaction avec le mode conversation F8.
-- Ciblage du PTY par identifiant et token, sans presse-papiers ni injection clavier Hyprland. Un seul IPC transporte le texte bracketed-paste suivi d’Entrée.
-- `npm run check` et `npm test` : 30 tests passent. `npm run test:ui` : recette existante Electron/PTY complète réussie. `node scripts/dictation-smoke.cjs` et `DICTATION_NATIVE=1 npm run test:dictation` : parcours de dictée réussi en Electron headless et sous Wayland.
-- La recette d’interface utilise explicitement un faux CLI, une capture PCM et un décodeur de fixture, avec de vrais sous-processus, un vrai Electron et un vrai PTY. Elle vérifie le texte modifié, l’absence d’envoi avant validation, l’envoi unique, Échap pendant capture/transcription, l’absence de résultat tardif et le changement de panneau. Aucun prompt envoyé à un compte.
-- Capture PipeWire réelle vérifiée séparément via le nouveau gestionnaire : microphone ouvert, mesure audio disponible, arrêt et nettoyage réussis. La reconnaissance de parole française par le modèle large-v3-turbo et la voix de Toubi restent à essayer ; ne pas confondre le décodeur de fixture avec ce test.
-- Captures de recette : `artifacts/dictation-recording.png` et `artifacts/dictation-review.png`, uniquement données de test.
-- Ancien source Hyprland F9 commenté avec sauvegarde `~/.config/hypr/hyprland.conf.before-dictation-card-20261027-183145` ; configuration valide, aucun bind F9 global restant. Fichiers anciens conservés.
-- La fenêtre personnelle existante n’a pas été relancée : sa fermeture arrête ses PTY. La carte devient disponible à la prochaine ouverture de Terminal Deck Electron. Le moteur Tauri conserve l’interface existante sans cette fonction.
+- Rust source in `src-tauri`, shared interface, npm/Cargo build, separate profile and recoverable parallel launcher.
+- Git: tests reading a real repository, names with spaces/newlines/renaming, no index created; global instructions saved and idempotent on a temporary AGENT.
+- Real but synthetic memory comparison: three shells, Xvfb without GPU, five seconds at rest. Electron 218 Mio PSS application; Tauri release 333,4 Mio. No PSS gains demonstrated; do not confuse cumulative RSS and assignable memory.
+- The desktop session and its processes are not visible in the recipe environment; `npm run memory` is provided for this measurement on the host.
+- Native Tauri recipe: real WebKitGTK, real PTYs, shell/resize/close, X11 keyboard via xdotool, Xvfb's own clipboard, Codex/fictitious quota protocol, five farts and save, isolated workshop. No real prompt.
+- The Tauri bench uses Xvfb and xdotool installed only under `/tmp/deck-native-tools`; variables `DECK_XVFB` and `DECK_XDOTOOL` to provide them otherwise. Comparison Playwright under `/tmp/deck-ui-tools`. No office changes required.
+- Office notifications, real Wayland and the resumption of a real account remain to be verified in use. The earlier shared lock recipe remains stuck in the sandbox; no new promises on this subject.
+
+Final migration result: 25 JavaScript tests and 7 Rust tests pass.
+JavaScript syntax and Rust format checked. Electron UI recipes, getting started 1/3/16
+and workshop pass. Complete Tauri recipe: shortcuts actually sent by
+xdotool, isolated native clipboard, PNG export written by Rust and verified signature,
+refusal of Deck commands from the workshop, native window closure with code 0.
+The normal release binary was also launched separately: absence of commands
+native_smoke in binary, WebKitGTK window, Ctrl Shift N and typing in a shell
+real checked (`scripts/tauri-production-smoke.cjs`, capture `artifacts/tauri-release.png`).
+Parallel installation carried out: launcher `terminal-deck-tauri`, dedicated menu,
+Electron profile copied only once with private backup. Main Launcher
+Electron kept while waiting for the choice of Toubi, taking into account the memory result.
+No commits created and no global AGENTS changed automatically.
+
+## Integrated dictation — 27 October 2026
+
+- New Electron Linux card: F9 / micro, capture with audio level, F9 or Enter to transcribe, editable text, then Send/Enter. Escape cancels. No automatic sending on silence or noise, no interaction with F8 conversation mode.
+- PTY targeting by identifier and token, without clipboard or keyboard injection Hyprland. A single IPC carries bracketed-paste text followed by Enter.
+- `npm run check` and `npm test`: 30 tests pass. `npm run test:ui`: Complete Electron/PTY existing recipe passed. `node scripts/dictation-smoke.cjs` and `DICTATION_NATIVE=1 npm run test:dictation`: successful dictation course using Electron headless and Wayland.
+- The interface recipe explicitly uses a fake CLI, PCM capture and fixture decoder, with real subprocesses, a real Electron and a real PTY. It checks for modified text, absence of sending before validation, single sending, escape during capture/transcription, absence of late result and panel change. No prompt sent to an account.
+- Actual PipeWire capture verified separately via new manager: microphone open, audio metering available, shutdown and cleanup successful. French speech recognition by the large-v3-turbo model and the voice of Toubi remain to be tried; do not confuse the fixture decoder with this test.
+- Recipe captures: `artifacts/dictation-recording.png` and `artifacts/dictation-review.png`, test data only.
+- Old source Hyprland F9 commented with backup `~/.config/hypr/hyprland.conf.before-dictation-card-20261027-183145`; valid configuration, no global F9 bind remaining. Old files preserved.
+- The existing personal window was not restarted: closing it stops its PTYs. The card becomes available the next time Terminal Deck Electron is opened. The Tauri engine retains the existing interface without this function.

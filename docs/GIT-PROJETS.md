@@ -1,9 +1,9 @@
 <!-- toubi-git-projects:start -->
-## Git dans les projets personnels
+## Git in personal projects
 
-- Pour chaque projet personnel modifiable, vérifier le dépôt Git avant de travailler.
-- Si aucun dépôt ne couvre le projet, initialiser Git à sa racine et préparer un `.gitignore` adapté avant les modifications. Ne pas initialiser les archives, dépendances, copies vendored ni projets externes sans demande.
-- Ne pas ajouter automatiquement tous les fichiers : vérifier les secrets, fichiers personnels, sorties générées et dépendances avant toute mise en index.
-- Ne jamais créer de commit, modifier l'historique, ajouter un dépôt distant ou pousser sans demande explicite.
-- Après les modifications, vérifier le diff et signaler les validations exécutées et leurs limites.
+- For each modifiable personal project, check the Git repository before working.
+- If no repository covers the project, initialize Git at its root and prepare a suitable `.gitignore` before modifications. Do not initialize archives, dependencies, vendored copies or external projects without request.
+- Do not automatically add all files: check secrets, personal files, generated outputs and dependencies before any indexing.
+- Never create a commit, modify history, add a remote repository or push without explicit request.
+- After the modifications, check the diff and report the executed validations and their limits.
 <!-- toubi-git-projects:end -->

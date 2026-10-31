@@ -1,18 +1,18 @@
-# Expressions des compagnons
+# Expressions of companions
 
-Créées avec l’outil intégré **imagegen**, à partir de `assets/mascots/trio.png`, conservé intact. Chaque planche transparente contient trois personnages et quatre poses par personnage.
+Created with the built-in **imagegen** tool, from `assets/mascots/trio.png`, kept intact. Each transparent sheet contains three characters and four poses per character.
 
-| Expression | Planche | Déclenchement |
+| Phrase | Board | Trigger |
 |---|---|---|
-| Curiosité | `assets/mascots/curious-sheet.png` | État non communiqué, dont le sélecteur `/resume` ; décoration uniquement |
-| Attente | `assets/mascots/waiting-sheet.png` | Signal natif `blocked` : intervention attendue |
-| Réveil | `assets/mascots/waking-sheet.png` | Sortie du sommeil, séquence unique de 1,2 seconde |
+| Curiosity | `assets/mascots/curious-sheet.png` | Unreported state, including selector `/resume`; decoration only |
+| Waiting | `assets/mascots/waiting-sheet.png` | Native signal `blocked`: intervention expected |
+| Alarm clock | `assets/mascots/waking-sheet.png` | Waking up from sleep, single sequence of 1,2 second |
 
-Le personnage, son état réel et sa pose restent synchronisés entre le panneau, les quotas et le mode plein panneau. Une nouvelle demande d’intervention peut interrompre immédiatement la séquence de réveil. Les préférences de réduction des mouvements arrêtent les animations ; la pose finale éveillée est utilisée pendant le réveil.
+The character, its actual state, and its pose remain in sync between panel, quotas, and full-panel mode. A new intervention request can immediately interrupt the wake-up sequence. Motion Reduction preferences stop animations; the final awake pose is used while waking up.
 
-Les planches de 1448 × 1086 pixels (1449 × 1086 pour la curiosité) sont affichées sans modification via des fenêtres CSS. Les marges des poses ont été inspectées ; les offsets verticaux du premier personnage compensent les baselines générées. Aucune image source n’a été écrasée.
+The boards of 1448 × 1086 pixels (1449 × 1086 for curiosity) are displayed without modification via CSS windows. The installation margins were inspected; the vertical offsets of the first character compensate for the generated baselines. No source images have been overwritten.
 
-## Prompts utilisés
+## Prompts used
 
 ### curious
 
@@ -22,27 +22,27 @@ Use case: identity-preserve. Production pixel art sprite sheet for a dark termin
 
 Use case: identity-preserve. Production pixel art sprite sheet for a dark terminal companion. Preserve exactly the three reference characters: violet slime, huge-eared bat, small antenna robot; same faces, silhouettes, charcoal violet ivory palette and crisp square pixels. Fully transparent background, no scenery, no grid, no labels, no extra characters. Exactly four columns by three rows of identical cells, twelve sprites total. Slime only row1, bat only row2, robot only row3. Full body centered within each cell, consistent scale and bottom baseline per row, all frames comfortably padded and separated. Four subtle frames of an attentive waiting loop, as if listening for the user's answer. Characters sit upright, soft hopeful open eyes, small paw or wing lifted to ask for attention, gentle blink and small nod. Slime raises one tiny pseudopod, bat raises one little wing hand with alert ears, robot raises one hand. No keyboard, no text or symbols; restrained motion distinct from typing.
 
-### waking
+### waking up
 
 Use case: identity-preserve. Production pixel art sprite sheet for a dark terminal companion. Preserve exactly the three reference characters: violet slime, huge-eared bat, small antenna robot; same faces, silhouettes, charcoal violet ivory palette and crisp square pixels. Fully transparent background, no scenery, no grid, no labels, no extra characters. Exactly four columns by three rows of identical cells, twelve sprites total. Slime only row1, bat only row2, robot only row3. Full body centered within each cell, consistent scale and bottom baseline per row, all frames comfortably padded and separated. Four successive frames of a one-shot waking-up stretch. First settled with half-closed sleepy eyes, second little yawn with eyes closed, third gentle full-body stretch with ears or antenna raised and arms or wings opening, fourth awake and settled looking forward. Slime squishes then stretches, bat stretches wings and ears, robot stretches arms and antennae. Cute and understated, no keyboard, no text or symbols, retain exact identity.
 
 
-## Correction du débordement
+## Fix overflow
 
-La rangée de gelées dépasse de sa cellule dans les planches générées. Pour la chauve-souris, le rendu masque les deux premiers pixels de la cellule en curiosité et les trois premiers au réveil, situés avant le début des oreilles. Les positions et silhouettes restent inchangées. Les images sources ne sont pas retouchées.
+The row of jellies protrudes from its cell in the generated boards. For the bat, the rendering hides the first two pixels of the cell in curiosity and the first three in waking, located before the start of the ears. The positions and silhouettes remain unchanged. The source images are not retouched.
 
-## Animations affinées — 23 octobre 2026
+## Fine-tuned animations — 23 October 2026
 
-Les planches originales restent intactes. Cette amélioration porte sur la mise en mouvement et les transitions dans Deck, pas sur de nouveaux dessins ou des exports de l’atelier.
+The original plates remain intact. This improvement concerns movement and transitions in Deck, not new drawings or workshop exports.
 
-- **Blob** : frappe souple avec tassement léger, respiration plus ample et rythme lent.
-- **Vesper** : petit soulèvement pendant la frappe, respiration légère, saut de fin plus haut.
-- **Byte** : impulsions courtes et régulières au clavier, respiration minimale, petit rebond de fin.
-- Curiosité : regards espacés et déplacement discret ; attente : petit redressement pour solliciter l’attention.
-- Fin de tour : anticipation, bond puis amortissement, suivis de la respiration existante. Cela reste un signal de fin, sans garantie de réussite.
-- Sommeil : pose fixe, cycle continu de 6,2 à 7 secondes selon le compagnon et petite pause après l’inspiration. Aucun défilement des silhouettes endormies.
-- Réveil : étirement bref sur les quatre poses, immédiatement interruptible par un nouvel état natif.
-- Changement d’état/pose : fondu de 280 ms à partir du cadrage précédent ; une seule couche temporaire, retirée après transition. La Veilleuse reprend aussi les changements visuels du compagnon source.
-- Réduction des mouvements : ni animation des sprites, ni fondu, ni transition du zoom.
+- **Blob**: soft strike with light compression, fuller breathing and slow rhythm.
+- **Vesper**: small lifting during the strike, light breathing, higher end jump.
+- **Byte**: short and regular pulses on the keyboard, minimal breathing, small rebound at the end.
+- Curiosity: spaced glances and discreet movement; waiting: small adjustment to seek attention.
+- End of turn: anticipation, jump then amortization, followed by existing breathing. This remains a signal of the end, with no guarantee of success.
+- Sleep: fixed pose, continuous cycle from 6,2 to 7 seconds depending on the companion and small pause after inspiration. No scrolling of sleeping figures.
+- Awakening: brief stretching on the four poses, immediately interruptible by a new native state.
+- Change of state/pose: fade of 280 ms from the previous framing; a single temporary layer, removed after transition. The Nightlight also incorporates the visual changes from the source companion.
+- Reduction of movements: no sprite animation, no fading, no zoom transition.
 
-Les déplacements restent inférieurs au pixel de la cellule de base pendant les boucles ordinaires. Le fond et la pose du sprite sont animés séparément du mouvement du corps. Les changements de personnage ne réinitialisent pas les signaux d’activité ni les délais de sommeil.
+Displacements remain less than the base cell pixel during ordinary loops. The background and pose of the sprite are animated separately from the movement of the body. Character changes do not reset activity signals or sleep delays.

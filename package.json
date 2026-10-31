@@ -2,7 +2,7 @@
   "name": "terminal-deck",
   "version": "0.3.0",
   "private": true,
-  "description": "Un cockpit local de vrais terminaux pour vos projets et agents.",
+  "description": "A local workspace for Codex and shell sessions, with Tauri and Electron backends.",
   "main": "src/main.cjs",
   "scripts": {
     "start": "tauri dev",

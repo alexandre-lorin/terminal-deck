@@ -1,22 +1,22 @@
-# Préférences par conversation
+# Preferences by conversation
 
-La [documentation officielle OpenAI](https://learn.chatgpt.com/docs/developer-commands) décrit la composition du titre de terminal. La recette locale du CLI installé vérifie la configuration `tui.terminal_title=["thread-id","thread-title"]`, dans un HOME temporaire, sans compte et sans prompt modèle.
+The official OpenAI](https://learn.chatgpt.com/docs/developer-commands) documentation describes the composition of the terminal title. The local recipe of the installed CLI checks the configuration `tui.terminal_title=["thread-id","thread-title"]`, in a temporary HOME, without an account and without a template prompt.
 
-## Identité observée
+## Identity observed
 
-Le CLI émet par exemple un titre composé d’un préfixe UUID abrégé, suivi de ` | ` puis du nom. Pour une conversation non nommée, la seconde partie peut être l’UUID complet. L’adaptateur garde le nom visible et sépare les métadonnées techniques ; il ne lit ni les transcripts, ni les bases privées, ni les identifiants de connexion.
+For example, the CLI issues a title composed of an abbreviated UUID prefix, followed by ` | ` then the name. For an unnamed conversation, the second part can be the full UUID. The adapter keeps the name visible and separates the technical metadata; it does not read transcripts, private databases, or connection identifiers.
 
-Les préférences utilisent les 29 caractères du préfixe UUID effectivement émis par ce CLI. Ce préfixe n’est pas un UUID complet : la reprise directe exige un UUID complet validé, connu via le même canal. Un format plus court ou inattendu ne produit aucune association. Si deux UUID complets connus partagent ce préfixe, l’entrée est marquée ambiguë et la synchronisation est désactivée pour cette entrée. L’unicité d’un préfixe abrégé ne constitue pas une garantie mathématique pour des UUID complets jamais communiqués.
+The preferences use the 29 characters from the UUID prefix actually issued by this CLI. This prefix is ​​not a full UUID: direct recovery requires a validated full UUID, known through the same channel. A shorter or unexpected format produces no association. If two known fully qualified UUIDs share this prefix, the entry is marked ambiguous and synchronization is disabled for that entry. The uniqueness of an abbreviated prefix does not constitute a mathematical guarantee for complete UUIDs never communicated.
 
-## Données et comportement
+## Data and behavior
 
-`workspace.json` conserve au maximum 500 fiches : clé native abrégée, UUID complet quand connu, dernier nom, favori Deck, compagnon choisi, dernière consultation et projet d’origine. Aucun échange n’est conservé. Les préférences antérieures d’un panneau sont reprises lors de sa première identification ; passer ensuite à une autre conversation n’hérite pas des choix du chat précédent.
+`workspace.json` keeps as many 500 records as possible: abbreviated native key, full UUID when known, last name, favorite Deck, chosen companion, last consultation and original project. No exchanges are kept. The previous preferences of a panel are taken over when it is first identified; Moving on to another conversation does not inherit the choices from the previous chat.
 
-- Même conversation dans plusieurs panneaux : compagnon et favoris partagés.
-- Renommage : la clé reste identique ; le nom n’est jamais utilisé pour identifier un chat.
-- Fermeture d’un panneau : la fiche reste consultable dans Sessions.
-- Réouverture par un clic explicite : accès au panneau actif existant, sinon lancement de la reprise par UUID complet. Si seul le préfixe est connu, ouverture du sélecteur natif avec un message explicatif, sans saisie automatique dans le terminal.
-- Sans identité reconnue : préférences du panneau seulement. Aucun rapprochement par nom, dossier ou contenu.
-- Les favoris sont propres à Deck ; ils ne modifient pas les épingles du client Codex officiel.
+- Same conversation in multiple panels: shared companion and favorites.
+- Renaming: the key remains the same; the name is never used to identify a cat.
+- Closing a panel: the form remains viewable in Sessions.
+- Reopening by an explicit click: access to the existing active panel, otherwise launch of recovery by full UUID. If only the prefix is ​​known, opening of the native selector with an explanatory message, without automatic entry in the terminal.
+- Without recognized identity: panel preferences only. No matching by name, folder or content.
+- Favorites are specific to Deck; they do not modify the pins of the official Codex client.
 
-Le lancement ordinaire reste `resume --all` ; les connexions et verrous continuent d’être gérés par Codex.
+Ordinary launch remains `resume --all`; connections and locks continue to be managed by Codex.
