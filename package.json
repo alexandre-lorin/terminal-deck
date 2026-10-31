@@ -1,0 +1,42 @@
+{
+  "name": "terminal-deck",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Un cockpit local de vrais terminaux pour vos projets et agents.",
+  "main": "src/main.cjs",
+  "scripts": {
+    "start": "tauri dev",
+    "postinstall": "install-electron && electron-rebuild -f -w node-pty",
+    "check": "node scripts/check.cjs",
+    "test": "node --test test/*.test.cjs",
+    "test:ui": "node scripts/smoke.cjs",
+    "test:dictation": "node scripts/dictation-smoke.cjs",
+    "test:codex": "node scripts/native-codex-smoke.cjs",
+    "install:local": "node scripts/install-local.cjs",
+    "test:codex-shared": "node scripts/shared-codex-smoke.cjs",
+    "studio": "node scripts/sprite-studio.cjs",
+    "test:studio": "node scripts/studio-smoke.cjs",
+    "test:startup": "node scripts/startup-smoke.cjs",
+    "tauri": "tauri",
+    "start:tauri": "tauri dev",
+    "build:tauri": "tauri build --no-bundle",
+    "check:rust": "cargo check --manifest-path src-tauri/Cargo.toml",
+    "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
+    "instructions:git": "node scripts/apply-git-instructions.cjs",
+    "memory": "node scripts/memory.cjs",
+    "test:tauri": "cargo build --manifest-path src-tauri/Cargo.toml --features native-smoke && node scripts/tauri-smoke.cjs",
+    "start:electron": "electron .",
+    "install:tauri": "node scripts/install-tauri.cjs"
+  },
+  "dependencies": {
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/addon-search": "^0.16.0",
+    "@xterm/xterm": "^6.0.0",
+    "node-pty": "^1.1.0"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.1",
+    "@tauri-apps/cli": "^2.12.4",
+    "electron": "^45.0.0"
+  }
+}

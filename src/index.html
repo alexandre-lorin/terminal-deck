@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Terminal Deck</title>
+  <link rel="stylesheet" href="../node_modules/@xterm/xterm/css/xterm.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="noir">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">›_</span><div>terminal deck<span>l’atelier</span></div></div>
+    <button id="palette-button" class="command-launch"><span>⌕</span> Commandes <kbd>Ctrl K</kbd></button>
+    <div class="section-label">VOS ESPACES <button id="add-project" title="Ouvrir un projet" aria-label="Ouvrir un projet">+</button></div>
+    <nav id="projects" aria-label="Projets"></nav>
+    <button id="browse-projects" class="browse">+ Ouvrir un projet</button>
+    <div class="sidebar-bottom"><button id="companions-button" aria-label="Compagnons" title="Choisir le compagnon du chat">♧ Compagnons</button><button id="sessions-button">⌕ Sessions</button><button id="attention-button" hidden>À votre attention</button><button id="history-button">↶ Tours terminés</button><button id="usage-button" title="Ouvrir La Veilleuse" aria-label="Quotas Codex" aria-expanded="false" aria-controls="usage-popup"><span aria-hidden="true">◴</span> Quotas <span class="usage-button-arrow" aria-hidden="true">↗</span></button></div>
+  </aside>
+  <main>
+    <header class="topbar">
+      <div class="breadcrumb"><span id="project-name">Mon espace</span><span class="slash">/</span><h1 id="active-title">Terminal Deck</h1></div>
+      <div class="top-actions"><button id="dictation-button" title="Dicter un message · F9" aria-label="Dicter un message" hidden><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></button><button id="git-button" title="Branche et changements du projet">⑂ Git</button><button id="new-shell">+ Terminal</button><button id="new-codex" class="primary">✳ Codex</button><button id="focus" title="Concentration · Ctrl Maj F" aria-label="Concentration">⛶</button><button id="more-button" title="Commandes · Ctrl K" aria-label="Commandes">···</button></div>
+    </header>
+    <div id="canvas" aria-label="Terminaux">
+      <section id="welcome" class="welcome"><svg class="workspace-emblem" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="34"/><ellipse cx="50" cy="50" rx="45" ry="14" transform="rotate(-25 50 50)"/><path d="M41 42l9 8-9 8m14 0h10"/><circle class="satellite" cx="79" cy="31" r="2"/></svg><div class="eyebrow">VOTRE ESPACE, AU CALME.</div><h2>On reprend où ?</h2><p>Retrouvez une conversation.<br>Ou faites de la place à la prochaine.</p><div class="welcome-actions"><button id="welcome-codex" class="primary">✳ Ouvrir Codex</button><button id="welcome-shell">+ Terminal</button></div><div class="welcome-foot"><kbd>Ctrl N</kbd> conversations <span>·</span> <kbd>Échap</kbd> nouveau chat dans le sélecteur</div></section>
+    </div>
+  </main>
+  <dialog id="modal"><div class="modal-head"><div><div class="eyebrow" id="modal-eyebrow">TERMINAL DECK</div><h2 id="modal-title"></h2></div><button id="modal-close" aria-label="Fermer">×</button></div><div id="modal-body"></div></dialog>
+  <div id="toast" role="status"></div>
+  <section id="usage-popup" class="usage-popup" role="region" aria-label="Quotas Codex" hidden>
+    <header id="usage-handle" class="usage-head"><span><i></i> LA VEILLEUSE</span><div><button id="usage-refresh" title="Actualiser les quotas" aria-label="Actualiser les quotas">↻</button><button id="usage-close" title="Fermer les quotas" aria-label="Fermer les quotas">×</button></div></header>
+    <div class="usage-intro"><span id="usage-mascot" class="usage-companion-slot" data-mascot="0"></span><div><h2>Quotas Codex</h2><p id="usage-caption">Lecture des quotas…</p></div></div>
+    <div id="usage-groups" aria-live="polite"></div>
+    <div id="usage-sessions" class="usage-sessions"></div>
+    <div class="usage-foot"><span id="usage-age">Aucun relevé</span><span>↻ 5 min</span></div>
+  </section>
+  <script src="../node_modules/@xterm/xterm/lib/xterm.js"></script>
+  <script src="../node_modules/@xterm/addon-fit/lib/addon-fit.js"></script>
+  <script src="../node_modules/@xterm/addon-search/lib/addon-search.js"></script>
+  <script src="layout.js"></script>
+  <script src="codex-picker.js"></script>
+  <script src="pets.js"></script>
+  <script src="conversations.js"></script>
+  <script src="companion.js"></script>
+  <script src="renderer.js"></script>
+  <script src="dictation.js"></script>
+  <script src="usage.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+node_modules/
+artifacts/
+*.log
+AGENTS.md.backup-*
+
+dist-tauri/
+src-tauri/target/
+
+# Local-only data excluded from this source publication
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.keystore
+*.jks
+*.sqlite*
+*.db
+__pycache__/
+.venv*/
+node_modules/
+**/target/
+.runtime/
+output/
+models/
